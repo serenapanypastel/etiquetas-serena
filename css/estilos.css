@@ -15,6 +15,42 @@ body{
     flex-direction: column;
     opacity: 1;
     transition: opacity .25s ease;
+    position: relative;
+}
+
+/* Resplandor decorativo de fondo, igual al del login */
+
+body::before,
+body::after{
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::before{
+    width: 480px;
+    height: 480px;
+    background: var(--color-principal);
+    opacity: .10;
+    top: -160px;
+    left: -160px;
+}
+
+body::after{
+    width: 420px;
+    height: 420px;
+    background: var(--color-acento);
+    opacity: .09;
+    bottom: -160px;
+    right: -140px;
+}
+
+body > *{
+    position: relative;
+    z-index: 1;
 }
 
 /* SESIÓN */
@@ -29,7 +65,7 @@ body.verificando-sesion{
     align-items: center;
     gap: .8rem;
     padding: .8rem 2rem;
-    background: var(--color-blanco);
+    background: var(--color-superficie);
     border-bottom: 1px solid var(--color-borde);
     font-size: .9rem;
     color: var(--texto-secundario);
@@ -38,7 +74,7 @@ body.verificando-sesion{
 .barra-sesion button{
     border: none;
     background: none;
-    color: var(--color-principal);
+    color: var(--color-principal-claro);
     font-weight: 600;
     cursor: pointer;
     font-size: .9rem;
@@ -46,7 +82,7 @@ body.verificando-sesion{
 }
 
 .barra-sesion button:hover{
-    color: var(--color-principal-oscuro);
+    color: var(--color-principal);
 }
 
 /* HEADER */
@@ -68,7 +104,7 @@ body.verificando-sesion{
 .encabezado h1{
     font-family: var(--fuente-titulos);
     font-size: 3rem;
-    color: var(--color-principal);
+    color: var(--texto-principal);
 }
 
 .encabezado p{
@@ -93,8 +129,10 @@ main{
 }
 
 .bienvenida h2{
+    font-family: var(--fuente-titulos);
     font-size: 2rem;
     margin-bottom: .8rem;
+    color: var(--texto-principal);
 }
 
 .bienvenida p{
@@ -111,17 +149,28 @@ main{
 }
 
 .tarjeta{
-    background: var(--color-blanco);
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
     width: 320px;
     padding: 2.5rem;
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
+    border-top: 3px solid var(--color-principal);
     transition: var(--transicion);
+}
+
+.opciones .tarjeta:nth-child(2){
+    border-top-color: var(--color-acento);
 }
 
 .tarjeta:hover{
     transform: translateY(-8px);
     box-shadow: var(--sombra-hover);
+    border-color: var(--color-principal);
+}
+
+.opciones .tarjeta:nth-child(2):hover{
+    border-color: var(--color-acento);
 }
 
 .tarjeta a{
@@ -138,7 +187,7 @@ main{
 }
 
 .tarjeta h2{
-    color: var(--color-principal);
+    color: var(--texto-principal);
     font-family: var(--fuente-titulos);
 }
 

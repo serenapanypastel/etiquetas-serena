@@ -9,9 +9,11 @@ main{
 
 #buscar{
     width:100%;
-    padding:1rem;
-    border-radius:var(--radio-mediano);
+    padding:1rem 1.2rem;
+    border-radius:var(--radio-pill);
     border:1px solid var(--color-borde);
+    background: var(--color-superficie);
+    color: var(--texto-principal);
 }
 
 .contenedor-fichas{
@@ -21,7 +23,8 @@ main{
 }
 
 .tarjeta{
-    background:var(--color-blanco);
+    background:var(--color-superficie);
+    border:1px solid var(--color-borde);
     border-radius:var(--radio-grande);
     padding:2rem;
     box-shadow:var(--sombra-suave);
@@ -49,11 +52,12 @@ main{
     border-radius:var(--radio-mediano);
     cursor:pointer;
     background:var(--color-principal);
-    color:white;
+    color:#062626;
 }
 
 .eliminar{
     background:#dc3545 !important;
+    color:#fff !important;
 }
 
 .sin-fichas{
@@ -68,7 +72,8 @@ main{
 table{
     width:100%;
     border-collapse:collapse;
-    background:var(--color-blanco);
+    background:var(--color-superficie);
+    border:1px solid var(--color-borde);
     border-radius:var(--radio-mediano);
     overflow:hidden;
     box-shadow:var(--sombra-suave);
@@ -76,7 +81,7 @@ table{
 
 thead{
     background:var(--color-principal);
-    color:var(--color-blanco);
+    color:#062626;
 }
 
 th, td{
@@ -86,7 +91,7 @@ th, td{
 }
 
 tbody tr:hover{
-    background:var(--color-fondo);
+    background:var(--color-superficie-alt);
 }
 
 td.acciones{
@@ -98,7 +103,8 @@ td.acciones{
 td.acciones button{
     border:none;
     cursor:pointer;
-    background:var(--color-fondo);
+    background:var(--color-superficie-alt);
+    color:var(--texto-principal);
     border-radius:var(--radio-pequeno);
     padding:.5rem .7rem;
     font-size:1rem;
@@ -110,11 +116,11 @@ td.acciones button:hover{
 }
 
 td.acciones button.eliminar{
-    background:#fdecea;
+    background: rgba(255, 132, 108, .15);
 }
 
 td.acciones button.eliminar:hover{
-    background:#f7c6c2;
+    background: rgba(255, 132, 108, .3);
 }
 
 /*==========================================
@@ -131,13 +137,17 @@ td.acciones button.eliminar:hover{
 
     width:min(700px,90%);
 
-    box-shadow:0 20px 60px rgba(0,0,0,.2);
+    background: var(--color-superficie);
+
+    color: var(--texto-principal);
+
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
 
 }
 
 .modal::backdrop{
 
-    background:rgba(0,0,0,.45);
+    background:rgba(0,0,0,.6);
 
 }
 
@@ -159,15 +169,31 @@ td.acciones button.eliminar:hover{
 
 }
 
+.cabecera-modal h2{
+
+    font-family: var(--fuente-titulos);
+
+    color: var(--color-principal);
+
+}
+
 .cerrar-modal{
 
     border:none;
 
     background:none;
 
+    color: var(--texto-secundario);
+
     font-size:1.4rem;
 
     cursor:pointer;
+
+}
+
+.cerrar-modal:hover{
+
+    color: var(--texto-principal);
 
 }
 
@@ -183,6 +209,8 @@ td.acciones button.eliminar:hover{
 
     background:var(--color-fondo);
 
+    border:1px solid var(--color-borde);
+
     padding:1rem;
 
     border-radius:12px;
@@ -195,11 +223,12 @@ td.acciones button.eliminar:hover{
     position:fixed;
     top:30px;
     right:30px;
-    background:#009B9B;
-    color:white;
+    background: var(--color-principal);
+    color:#062626;
+    font-weight:600;
     padding:1rem 1.5rem;
     border-radius:12px;
-    box-shadow:0 15px 40px rgba(0,0,0,.2);
+    box-shadow:0 15px 40px rgba(0,0,0,.5);
     transform:translateX(150%);
     transition:.35s;
     z-index:999;

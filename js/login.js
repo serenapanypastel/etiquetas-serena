@@ -23,10 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ---------- Mostrar / ocultar contraseña ---------- */
 
+    const iconoOjo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+
+    const iconoOjoTachado = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 1 12s4 8 11 8a9.26 9.26 0 0 0 5.39-1.61"></path><line x1="2" y1="2" x2="22" y2="22"></line><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path></svg>`;
+
     botonMostrarClave.addEventListener("click", () => {
         const esTexto = campoClave.type === "text";
         campoClave.type = esTexto ? "password" : "text";
-        botonMostrarClave.textContent = esTexto ? "👁️" : "🙈";
+        botonMostrarClave.innerHTML = esTexto ? iconoOjo : iconoOjoTachado;
         botonMostrarClave.setAttribute(
             "aria-label",
             esTexto ? "Mostrar contraseña" : "Ocultar contraseña"

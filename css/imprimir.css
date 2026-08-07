@@ -1,5 +1,9 @@
 /* =========================================================
    ETIQUETA IMPRIMIBLE (usada para "Descargar PDF")
+   A propósito NO usa las variables de tema oscuro del resto
+   del sitio: la etiqueta siempre debe imprimirse en claro
+   (texto oscuro sobre fondo blanco), sin importar el tema
+   que se vea en pantalla.
    ========================================================= */
 
 .etiqueta-imprimible{
@@ -9,17 +13,20 @@
 .etiqueta{
     width: 320px;
     padding: 1.5rem;
-    border: 2px solid var(--color-principal);
-    border-radius: var(--radio-mediano);
+    background: #ffffff;
+    border: 2px solid var(--color-principal-oscuro, #009B9B);
+    border-radius: var(--radio-mediano, 1rem);
     font-family: var(--fuente-texto);
-    color: var(--texto-principal);
+    color: #222222;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 .etiqueta-encabezado{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px dashed var(--color-borde);
+    border-bottom: 2px dashed #d8d8d8;
     padding-bottom: .8rem;
     margin-bottom: .8rem;
 }
@@ -27,16 +34,18 @@
 .etiqueta-marca{
     font-family: var(--fuente-titulos);
     font-weight: bold;
-    color: var(--color-principal);
+    color: var(--color-principal-oscuro, #009B9B);
 }
 
 .etiqueta-pedido{
     font-weight: bold;
+    color: #222222;
 }
 
 .etiqueta-cliente{
     margin-bottom: .8rem;
     font-size: 1.2rem;
+    color: #111111;
 }
 
 .etiqueta-tabla{
@@ -50,11 +59,12 @@
     text-align: left;
     padding: .3rem 0;
     font-size: .9rem;
+    color: #222222;
 }
 
 .etiqueta-tabla th{
     width: 40%;
-    color: var(--texto-secundario);
+    color: #6B7280;
     font-weight: 600;
 }
 
@@ -62,11 +72,12 @@
     font-size: .85rem;
     margin-bottom: .8rem;
     line-height: 1.4;
+    color: #222222;
 }
 
 .etiqueta-pie{
     font-size: .7rem;
-    color: var(--texto-secundario);
+    color: #6B7280;
     text-align: right;
 }
 
@@ -88,6 +99,7 @@
         position: fixed;
         top: 0;
         left: 0;
+        background: #ffffff;
     }
 
     .etiqueta{

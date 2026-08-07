@@ -1,204 +1,225 @@
 /* =========================================================
-   PÁGINA DE LOGIN
+   PÁGINA DE LOGIN — tema oscuro
    ========================================================= */
 
-body.pagina-login{
-    min-height: 100vh;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.login-layout{
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
+body.pagina-login-oscura{
+    font-family: var(--fuente-texto);
+    background: #0E1316;
 }
 
-/* ---------- PANEL DE MARCA ---------- */
-
-.panel-marca{
-    position: relative;
-    overflow: hidden;
+.login-oscuro{
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem;
-    background: linear-gradient(160deg, #EAFBFB 0%, #FFF6EF 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
 }
 
-.forma{
+.brillo{
     position: absolute;
     border-radius: 50%;
-    filter: blur(6px);
+    filter: blur(90px);
+    pointer-events: none;
 }
 
-.forma-uno{
-    width: 420px;
-    height: 420px;
+.brillo-uno{
+    width: 480px;
+    height: 480px;
     background: var(--color-principal);
-    opacity: .12;
-    top: -140px;
+    opacity: .18;
+    top: -160px;
     left: -140px;
 }
 
-.forma-dos{
-    width: 320px;
-    height: 320px;
+.brillo-dos{
+    width: 420px;
+    height: 420px;
     background: var(--color-acento);
-    opacity: .12;
-    bottom: -110px;
-    right: -90px;
+    opacity: .14;
+    bottom: -160px;
+    right: -120px;
 }
 
-.panel-marca-contenido{
+.caja-login-oscura{
     position: relative;
     z-index: 2;
-    max-width: 380px;
-    text-align: center;
+    width: min(420px, 100%);
 }
 
-.logo-marca{
-    width: 220px;
-    margin: 0 auto 2rem;
-    display: block;
+.logo-oscuro{
+    width: 150px;
+    margin-bottom: 2rem;
 }
 
-.frase-marca{
+.caja-login-oscura h1{
     font-family: var(--fuente-titulos);
-    font-size: 1.3rem;
-    color: var(--texto-principal);
-    line-height: 1.6;
+    font-weight: 700;
+    font-size: 2.2rem;
+    line-height: 1.25;
+    color: #F5F5F5;
+    margin-bottom: 2.4rem;
 }
 
-/* ---------- PANEL DE FORMULARIO ---------- */
+/* ---------- CAMPOS ---------- */
 
-.panel-formulario{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 2rem;
-    background: var(--color-blanco);
-}
-
-.caja-formulario{
-    width: min(380px, 100%);
-}
-
-.caja-formulario h1{
-    font-family: var(--fuente-titulos);
-    font-size: 2rem;
-    color: var(--texto-principal);
-    margin-bottom: .4rem;
-}
-
-.subtitulo{
-    color: var(--texto-secundario);
-    line-height: 1.5;
-    margin-bottom: 2.2rem;
-}
-
-#formulario-login label{
-    display: block;
-    font-weight: 600;
-    font-size: .9rem;
-    margin-top: 1.3rem;
-    margin-bottom: .5rem;
-}
-
-#formulario-login input{
-    margin: 0;
-}
-
-.campo-clave{
+.campo-icono{
     position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.campo-icono .icono-campo{
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: #7B8894;
+    display: flex;
+}
+
+.campo-icono .icono-campo svg{
+    width: 100%;
+    height: 100%;
+}
+
+.campo-icono input{
+    width: 100%;
+    background: #1B2126;
+    border: 1px solid #262D33;
+    color: #F5F5F5;
+    border-radius: 999px;
+    padding: 1rem 1.2rem 1rem 3.1rem;
+    font-family: inherit;
+    font-size: .95rem;
+    outline: none;
+    transition: .2s ease;
+}
+
+.campo-icono input::placeholder{
+    color: #6B7580;
+}
+
+.campo-icono input:focus{
+    border-color: var(--color-principal);
+    box-shadow: 0 0 0 3px rgba(0, 179, 183, .2);
 }
 
 .campo-clave input{
-    padding-right: 3rem;
+    padding-right: 3.2rem;
 }
 
 .boton-mostrar-clave{
     position: absolute;
-    right: .6rem;
+    right: .9rem;
     top: 50%;
     transform: translateY(-50%);
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 1.1rem;
-    line-height: 1;
-    padding: .4rem;
-    color: var(--texto-secundario);
+    color: #7B8894;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    display: flex;
 }
+
+.boton-mostrar-clave svg{
+    width: 100%;
+    height: 100%;
+}
+
+.boton-mostrar-clave:hover{
+    color: #F5F5F5;
+}
+
+/* ---------- ENLACES Y MENSAJES ---------- */
 
 .fila-opciones{
     display: flex;
     justify-content: flex-end;
-    margin-top: .7rem;
+    margin: -.4rem 0 1.4rem;
 }
 
 .enlace-olvide{
     border: none;
     background: none;
     cursor: pointer;
-    color: var(--color-principal);
+    color: #8FE3E3;
     font-size: .85rem;
     font-weight: 600;
-    transition: var(--transicion);
+    transition: .2s ease;
 }
 
 .enlace-olvide:hover{
-    color: var(--color-principal-oscuro);
-    text-decoration: underline;
+    color: #ffffff;
 }
 
 .mensaje-error{
-    color: var(--color-acento);
-    font-size: .9rem;
-    min-height: 1.2rem;
-    margin-top: .8rem;
+    color: #FF9C8A;
+    font-size: .85rem;
+    min-height: 1.1rem;
+    margin-bottom: .6rem;
 }
 
 .mensaje-exito{
-    color: var(--color-principal-oscuro);
-    font-size: .9rem;
-    min-height: 1.2rem;
-    margin-top: .3rem;
+    color: #7FE3D0;
+    font-size: .85rem;
+    min-height: 1.1rem;
+    margin-bottom: .6rem;
 }
 
-#boton-login{
-    margin-top: 1.4rem;
+/* ---------- BOTÓN PRINCIPAL ---------- */
+
+.boton-login-oscuro{
     width: 100%;
     padding: 1rem;
+    border: none;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #14171C;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: .2s ease;
+    margin-top: .4rem;
 }
 
-#boton-login:disabled{
+.boton-login-oscuro:hover{
+    background: #E9E9E9;
+}
+
+.boton-login-oscuro:disabled{
     opacity: .6;
     cursor: not-allowed;
 }
 
+.pie-login{
+    text-align: center;
+    color: #6B7580;
+    font-size: .85rem;
+    margin-top: 1.8rem;
+}
+
 /* ---------- RESPONSIVE ---------- */
 
-@media (max-width: 900px){
+@media (max-width: 480px){
 
-    .login-layout{
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
+    .caja-login-oscura h1{
+        font-size: 1.8rem;
     }
 
-    .panel-marca{
-        padding: 2.5rem 2rem;
-    }
-
-    .logo-marca{
-        width: 160px;
-        margin-bottom: 1rem;
-    }
-
-    .frase-marca{
-        font-size: 1.1rem;
-    }
-
-    .panel-formulario{
-        padding: 2.5rem 1.5rem 3rem;
+    .logo-oscuro{
+        width: 120px;
     }
 
 }

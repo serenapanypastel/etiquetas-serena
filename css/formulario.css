@@ -15,7 +15,8 @@ main{
     width: min(1200px, 92%);
     margin: 2rem auto;
     padding: 2.5rem;
-    background: var(--color-blanco);
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
     text-align: center;
@@ -81,7 +82,8 @@ main{
 /* RESUMEN DEL PEDIDO */
 
 .resumen{
-    background: var(--color-blanco);
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
     padding: 2rem;
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
@@ -119,7 +121,8 @@ main{
 
 fieldset{
     border: none;
-    background: var(--color-blanco);
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
     padding: 2rem;
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
@@ -140,27 +143,43 @@ label{
     margin-top: 1rem;
     margin-bottom: .5rem;
     font-weight: 600;
+    color: var(--texto-principal);
 }
 
 input,
 select,
 textarea{
     width: 100%;
-    padding: .9rem 1rem;
+    padding: .9rem 1.1rem;
     border: 1px solid var(--color-borde);
     border-radius: var(--radio-mediano);
     font-family: inherit;
     font-size: 1rem;
     outline: none;
     transition: var(--transicion);
-    background: var(--color-blanco);
+    background: var(--color-fondo);
+    color: var(--texto-principal);
+}
+
+input::placeholder,
+textarea::placeholder{
+    color: var(--texto-secundario);
 }
 
 input:focus,
 select:focus,
 textarea:focus{
     border-color: var(--color-principal);
-    box-shadow: 0 0 0 4px rgba(0,179,183,.15);
+    box-shadow: 0 0 0 4px rgba(0, 209, 214, .18);
+}
+
+input[readonly]{
+    color: var(--texto-secundario);
+    background: var(--color-superficie-alt);
+}
+
+select{
+    color-scheme: dark;
 }
 
 textarea{
@@ -175,13 +194,14 @@ textarea{
     justify-content: flex-end;
     gap: 1rem;
     margin-top: 1rem;
+    flex-wrap: wrap;
 }
 
 .acciones button{
     border: none;
     cursor: pointer;
     padding: 1rem 1.8rem;
-    border-radius: var(--radio-mediano);
+    border-radius: var(--radio-pill);
     font-size: 1rem;
     font-weight: 600;
     transition: var(--transicion);
@@ -189,16 +209,16 @@ textarea{
 
 .boton-guardar{
     background: var(--color-principal);
-    color: var(--color-blanco);
+    color: #062626;
 }
 
 .boton-guardar:hover{
-    background: var(--color-principal-oscuro);
+    background: var(--color-principal-claro);
 }
 
 .boton-pdf{
     background: var(--color-secundario);
-    color: var(--texto-principal);
+    color: #4a2d1c;
 }
 
 .boton-pdf:hover{
@@ -206,11 +226,14 @@ textarea{
 }
 
 .boton-limpiar{
-    background: #ececec;
-    color: var(--texto-principal);
+    background: transparent;
+    border: 1px solid var(--color-borde) !important;
+    color: var(--texto-secundario);
 }
 
 .boton-limpiar:hover{
+    background: var(--color-superficie-alt);
+    color: var(--texto-principal);
     transform: translateY(-3px);
 }
 

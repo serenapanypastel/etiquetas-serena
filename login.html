@@ -3,103 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="css/formulario.css">
     <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/responsive.css">
     <title>Iniciar sesión · Producción Serena</title>
 </head>
-<body class="pagina-login">
+<body class="pagina-login-oscura">
 
-    <main class="login-layout">
+    <main class="login-oscuro">
 
-        <!-- PANEL DE MARCA -->
+        <div class="brillo brillo-uno"></div>
+        <div class="brillo brillo-dos"></div>
 
-        <section class="panel-marca">
+        <section class="caja-login-oscura">
 
-            <div class="forma forma-uno"></div>
-            <div class="forma forma-dos"></div>
+            <img
+                src="img/2_DEF.-Identificador-SERENA.png"
+                alt="Logo Pastelería Serena"
+                class="logo-oscuro">
 
-            <div class="panel-marca-contenido">
+            <h1>Hola,<br>bienvenido de nuevo</h1>
 
-                <img
-                    src="img/2_DEF.-Identificador-SERENA.png"
-                    alt="Logo Pastelería Serena"
-                    class="logo-marca">
+            <form id="formulario-login" autocomplete="off">
 
-                <p class="frase-marca">
-                    Cada pedido, organizado con el mismo cuidado con que se hornea.
-                </p>
+                <div class="campo-icono">
 
-            </div>
-
-        </section>
-
-        <!-- PANEL DE FORMULARIO -->
-
-        <section class="panel-formulario">
-
-            <div class="caja-formulario">
-
-                <h1>Bienvenido de nuevo</h1>
-
-                <p class="subtitulo">Inicia sesión para administrar las fichas de producción.</p>
-
-                <form id="formulario-login" autocomplete="off">
-
-                    <label for="correo">Correo</label>
+                    <span class="icono-campo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 5L2 7"></path></svg>
+                    </span>
 
                     <input
                         type="email"
                         id="correo"
                         name="correo"
-                        placeholder="tucorreo@ejemplo.com"
+                        placeholder="Correo electrónico"
                         required
                         autofocus>
 
-                    <label for="clave">Contraseña</label>
+                </div>
 
-                    <div class="campo-clave">
+                <div class="campo-icono campo-clave">
 
-                        <input
-                            type="password"
-                            id="clave"
-                            name="clave"
-                            placeholder="••••••••"
-                            minlength="6"
-                            required>
+                    <span class="icono-campo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </span>
 
-                        <button
-                            type="button"
-                            id="mostrar-clave"
-                            class="boton-mostrar-clave"
-                            aria-label="Mostrar contraseña">
+                    <input
+                        type="password"
+                        id="clave"
+                        name="clave"
+                        placeholder="Contraseña"
+                        minlength="6"
+                        required>
 
-                            👁️
+                    <button
+                        type="button"
+                        id="mostrar-clave"
+                        class="boton-mostrar-clave"
+                        aria-label="Mostrar contraseña">
 
-                        </button>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 
-                    </div>
-
-                    <div class="fila-opciones">
-
-                        <button type="button" id="olvide-clave" class="enlace-olvide">
-                            ¿Olvidaste tu contraseña?
-                        </button>
-
-                    </div>
-
-                    <p class="mensaje-error" id="mensaje-error" role="alert"></p>
-                    <p class="mensaje-exito" id="mensaje-exito" role="status"></p>
-
-                    <button type="submit" class="boton-guardar" id="boton-login">
-                        Iniciar sesión
                     </button>
 
-                </form>
+                </div>
 
-            </div>
+                <div class="fila-opciones">
+                    <button type="button" id="olvide-clave" class="enlace-olvide">
+                        ¿Olvidaste tu contraseña?
+                    </button>
+                </div>
+
+                <p class="mensaje-error" id="mensaje-error" role="alert"></p>
+                <p class="mensaje-exito" id="mensaje-exito" role="status"></p>
+
+                <button type="submit" class="boton-login-oscuro" id="boton-login">
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+            <p class="pie-login">Acceso exclusivo para el equipo de Pastelería Serena.</p>
 
         </section>
 
