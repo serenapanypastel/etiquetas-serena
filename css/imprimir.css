@@ -1,0 +1,101 @@
+/* =========================================================
+   ETIQUETA IMPRIMIBLE (usada para "Descargar PDF")
+   ========================================================= */
+
+.etiqueta-imprimible{
+    display: none;
+}
+
+.etiqueta{
+    width: 320px;
+    padding: 1.5rem;
+    border: 2px solid var(--color-principal);
+    border-radius: var(--radio-mediano);
+    font-family: var(--fuente-texto);
+    color: var(--texto-principal);
+}
+
+.etiqueta-encabezado{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed var(--color-borde);
+    padding-bottom: .8rem;
+    margin-bottom: .8rem;
+}
+
+.etiqueta-marca{
+    font-family: var(--fuente-titulos);
+    font-weight: bold;
+    color: var(--color-principal);
+}
+
+.etiqueta-pedido{
+    font-weight: bold;
+}
+
+.etiqueta-cliente{
+    margin-bottom: .8rem;
+    font-size: 1.2rem;
+}
+
+.etiqueta-tabla{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: .8rem;
+}
+
+.etiqueta-tabla th,
+.etiqueta-tabla td{
+    text-align: left;
+    padding: .3rem 0;
+    font-size: .9rem;
+}
+
+.etiqueta-tabla th{
+    width: 40%;
+    color: var(--texto-secundario);
+    font-weight: 600;
+}
+
+.etiqueta-observaciones{
+    font-size: .85rem;
+    margin-bottom: .8rem;
+    line-height: 1.4;
+}
+
+.etiqueta-pie{
+    font-size: .7rem;
+    color: var(--texto-secundario);
+    text-align: right;
+}
+
+/* ---------- Vista de impresión ---------- */
+
+@media print{
+
+    body *{
+        visibility: hidden;
+    }
+
+    .etiqueta-imprimible,
+    .etiqueta-imprimible *{
+        visibility: visible;
+    }
+
+    .etiqueta-imprimible{
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .etiqueta{
+        border-color: #000;
+    }
+
+    @page{
+        size: 90mm 130mm;
+        margin: 8mm;
+    }
+}

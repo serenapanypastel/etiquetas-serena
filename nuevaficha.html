@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/historial.css">
+    <link rel="stylesheet" href="css/imprimir.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Nueva ficha · Producción Serena</title>
+</head>
+<body class="verificando-sesion">
+
+    <div class="barra-sesion">
+        <span id="correo-usuario"></span>
+        <button type="button" id="cerrar-sesion">Cerrar sesión</button>
+    </div>
+
+    <header class="encabezado">
+
+        <nav class="ruta">
+
+            <a href="index.html">Inicio</a>
+
+            <span>/</span>
+
+            <strong> Nueva ficha </strong>
+
+        </nav>
+
+        <img src="img/2_DEF.-Identificador-SERENA.png" alt="Logo Serena" class="logo">
+
+        <h1> Nueva ficha </h1>
+
+        <p> Complete la información del pedido para generar la ficha de producción.</p>
+
+    </header>
+
+    <main>
+
+        <!-- RESUMEN -->
+
+        <aside class="resumen">
+
+            <h2> 📌 Resumen del pedido </h2>
+
+            <p> <strong>Pedido:</strong>
+
+                <span id="numero-pedido">Generándose...</span>
+
+            </p>
+
+            <p>
+
+                <strong>Estado:</strong><span id="estado">Borrador</span>
+
+            </p>
+
+            <p><strong>Entrega:</strong>
+
+                <span id="resumen-entrega">
+
+                    Sin seleccionar
+
+                </span>
+
+            </p>
+
+        </aside>
+
+        <!-- FORMULARIO --> 
+
+        <form id="formulario-ficha" autocomplete="off">
+
+            <!-- INFORMACIÓN DEL PEDIDO -->
+
+            <fieldset>
+
+                <legend> 🧾 Información del pedido </legend>
+
+                <label for="pedido"> Número del pedido </label>
+
+                <input
+                    type="text"
+                    id="pedido"
+                    name="pedido"
+                    placeholder="Se generará automáticamente"
+                    readonly>
+
+            </fieldset>
+
+            <!-- CLIENTE -->
+
+            <fieldset>
+
+                <legend> 👤 Datos del cliente </legend>
+
+                <section class="dos-columnas">
+
+                    <section>
+
+                        <label for="cliente">
+
+                            Nombre del cliente
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cliente"
+                            name="cliente"
+                            required>
+
+                    </section>
+
+                    <section>
+
+                        <label for="telefono">
+
+                            Teléfono
+
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="telefono"
+                            name="telefono">
+
+                    </section>
+
+                </section>
+
+            </fieldset>
+
+            <!-- PRODUCCIÓN -->
+
+            <fieldset>
+
+                <legend> 🎂 Producción </legend>
+
+                <section class="dos-columnas">
+
+                    <section>
+
+                        <label for="bizcochos">
+
+                            Total de bizcochos
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="bizcochos"
+                            name="bizcochos"
+                            min="1"
+                            required>
+
+                    </section>
+
+                    <section>
+
+                        <label for="sabor">
+
+                            Sabor del bizcocho
+
+                        </label>
+
+                        <select
+                            id="sabor"
+                            name="sabor"
+                            required>
+
+                            <option value="">Seleccione un sabor</option>
+                            <option>Vainilla</option>
+                            <option>Chocolate</option>
+                            <option>Red Velvet</option>
+                            <option>Naranja</option>
+                            <option>Limón</option>
+
+                        </select>
+
+                    </section>
+
+                    <section>
+
+                        <label for="relleno">
+
+                            Relleno
+
+                        </label>
+
+                        <select
+                            id="relleno"
+                            name="relleno"
+                            required>
+
+                            <option value="">Seleccione un relleno</option>
+                            <option>Arequipe</option>
+                            <option>Chocolate</option>
+                            <option>Chocolate blanco</option>
+                            <option>Frutos amarillos</option>
+                            <option>Frutos rojos</option>
+
+                        </select>
+
+                    </section>
+
+                    <section>
+
+                        <label for="molde">
+
+                            Tamaño del molde
+
+                        </label>
+
+                        <select
+                            id="molde"
+                            name="molde"
+                            required>
+
+                            <option value="">Seleccione un tamaño</option>
+                            <option>#1</option>
+                            <option>#2</option>
+                            <option>#3</option>
+                            <option>#4</option>
+
+                        </select>
+
+                    </section>
+
+                    <section>
+
+                        <label for="fecha-entrega">
+
+                            Fecha de entrega
+
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fecha-entrega"
+                            name="fecha-entrega"
+                            required>
+
+                    </section>
+
+                </section>
+
+            </fieldset>
+
+            <!-- OBSERVACIONES -->
+
+            <fieldset>
+
+                <legend>
+
+                    📝 Observaciones
+
+                </legend>
+
+                <label for="observaciones">
+
+                    Detalles del pedido
+
+                </label>
+
+                <textarea
+                    id="observaciones"
+                    name="observaciones"
+                    rows="7"
+                    placeholder="Escriba aquí cualquier detalle importante del pedido..."></textarea>
+
+            </fieldset>
+
+            <!-- BOTONES -->
+
+            <menu class="acciones">
+
+                <button type="submit" class="boton-guardar">
+
+                    💾 Guardar ficha
+
+                </button>
+
+                <button type="button" id="descargar-pdf" class="boton-pdf">
+
+                    📄 Descargar PDF
+
+                </button>
+
+                <button type="reset" class="boton-limpiar">
+
+                    🧹 Limpiar formulario
+
+                </button>
+
+            </menu>
+
+        </form>
+
+    </main>
+
+    <footer>
+
+        <small> © 2026 Producción Serena </small>
+
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/nuevaficha.js"></script>
+
+</body>
+</html>

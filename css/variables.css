@@ -1,0 +1,52 @@
+/*      VARIABLES GLOBALES      */
+
+:root {
+
+    /* Colores principales */
+
+    --color-principal: #00B3B7;
+    --color-principal-oscuro: #009B9B;
+
+    --color-secundario: #FFBF94;
+    --color-acento: #FF846C;
+
+    /* Colores neutros */
+
+    --color-blanco: #FFFFFF;
+    --color-fondo: #F8FAFC;
+
+    --color-borde: #E5E7EB;
+
+    --texto-principal: #2B2B2B;
+    --texto-secundario: #6B7280;
+
+    /* Tipografías */
+
+    --fuente-titulos: "Soligant", serif;
+    --fuente-texto: "FS Lucas Pro", sans-serif;
+
+    /* Bordes */
+
+    --radio-pequeno: .5rem;
+    --radio-mediano: 1rem;
+    --radio-grande: 1.5rem;
+
+    /* Sombras */
+
+    --sombra-suave: 0 10px 30px rgba(0, 0, 0, .08);
+
+    --sombra-hover: 0 18px 40px rgba(0, 0, 0, .12);
+
+    /* Espaciados */
+
+    --espacio-xs: .5rem;
+    --espacio-sm: 1rem;
+    --espacio-md: 1.5rem;
+    --espacio-lg: 2rem;
+    --espacio-xl: 3rem;
+
+    /* Transiciones */
+
+    --transicion: .3s ease;
+
+}

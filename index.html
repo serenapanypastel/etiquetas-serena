@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Producción Serena</title>
+</head>
+<body class="verificando-sesion">
+
+    <div class="barra-sesion">
+        <span id="correo-usuario"></span>
+        <button type="button" id="cerrar-sesion">Cerrar sesión</button>
+    </div>
+
+    <header class="encabezado">
+
+        <img
+            src="img/2_DEF.-Identificador-SERENA.png"
+            alt="Logo Producción Serena"
+            class="logo">
+
+        <h1>
+            Producción Serena
+        </h1>
+
+        <p>
+            Sistema para administrar las fichas de producción.
+        </p>
+
+    </header>
+
+    <main>
+
+        <section class="bienvenida">
+
+            <h2>
+                Bienvenido
+            </h2>
+
+            <p>
+                Selecciona una opción para comenzar.
+            </p>
+
+        </section>
+
+        <section class="opciones">
+
+            <article class="tarjeta">
+
+                <a href="nuevaficha.html">
+
+                    <h3>➕</h3>
+
+                    <h2>Nueva ficha</h2>
+
+                    <p>
+                        Registrar un nuevo pedido.
+                    </p>
+
+                </a>
+
+            </article>
+
+            <article class="tarjeta">
+
+                <a href="historial.html">
+
+                    <h3>📋</h3>
+
+                    <h2>Historial</h2>
+
+                    <p>
+                        Consultar todas las fichas registradas.
+                    </p>
+
+                </a>
+
+            </article>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <small> © 2026 Producción Serena </small>
+
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth-guard.js"></script>
+
+</body>
+</html>

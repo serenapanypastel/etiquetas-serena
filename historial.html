@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/historial.css">
+    <link rel="stylesheet" href="css/imprimir.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Historial · Producción Serena</title>
+</head>
+<body class="verificando-sesion">
+
+    <div class="barra-sesion">
+        <span id="correo-usuario"></span>
+        <button type="button" id="cerrar-sesion">Cerrar sesión</button>
+    </div>
+
+    <header class="encabezado">
+
+        <nav class="ruta">
+
+            <a href="index.html">Inicio</a>
+
+            <span>/</span>
+
+            <strong>Historial</strong>
+
+        </nav>
+
+        <img
+            src="img/2_DEF.-Identificador-SERENA.png"
+            alt="Logo Serena"
+            class="logo">
+
+        <h1>
+
+            Historial de fichas
+
+        </h1>
+
+        <p>
+
+            Consulte todas las fichas registradas.
+
+        </p>
+
+    </header>
+
+    <main>
+
+        <section class="barra-superior">
+
+            <input
+                type="search"
+                id="buscar"
+                placeholder="Buscar por cliente o pedido...">
+
+        </section>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Pedido</th>
+
+                    <th>Cliente</th>
+
+                    <th>Entrega</th>
+
+                    <th>Acciones</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="tabla-fichas">
+
+            </tbody>
+
+        </table>
+
+    </main>
+
+   <footer>
+
+        <small> © 2026 Producción Serena </small>
+
+    </footer>
+
+    <dialog class="modal" id="modal-detalle">
+
+        <div class="contenido-modal">
+
+            <div class="cabecera-modal">
+
+                <h2>📌 Detalle de la ficha</h2>
+
+                <button type="button" class="cerrar-modal" id="cerrar-modal">✖</button>
+
+            </div>
+
+            <div id="detalle-ficha"></div>
+
+        </div>
+
+    </dialog>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/historial.js"></script>
+
+</body>
+</html>

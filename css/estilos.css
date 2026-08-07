@@ -1,0 +1,157 @@
+/*  CONFIGURACIÓN GLOBAL  */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: var(--fuente-texto);
+    background: var(--color-fondo);
+    color: var(--texto-principal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transition: opacity .25s ease;
+}
+
+/* SESIÓN */
+
+body.verificando-sesion{
+    opacity: 0;
+}
+
+.barra-sesion{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: .8rem;
+    padding: .8rem 2rem;
+    background: var(--color-blanco);
+    border-bottom: 1px solid var(--color-borde);
+    font-size: .9rem;
+    color: var(--texto-secundario);
+}
+
+.barra-sesion button{
+    border: none;
+    background: none;
+    color: var(--color-principal);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: .9rem;
+    transition: var(--transicion);
+}
+
+.barra-sesion button:hover{
+    color: var(--color-principal-oscuro);
+}
+
+/* HEADER */
+
+.encabezado{
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+.logo{
+    width: 150px;
+}
+
+.encabezado h1{
+    font-family: var(--fuente-titulos);
+    font-size: 3rem;
+    color: var(--color-principal);
+}
+
+.encabezado p{
+    max-width: 550px;
+    color: var(--texto-secundario);
+    line-height: 1.7;
+}
+
+/*  MAIN */
+
+main{
+    flex: 1;
+    width: min(1100px,90%);
+    margin: auto;
+}
+
+/*  BIENVENIDA */
+
+.bienvenida{
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.bienvenida h2{
+    font-size: 2rem;
+    margin-bottom: .8rem;
+}
+
+.bienvenida p{
+    color: var(--texto-secundario);
+}
+
+/* TARJETAS  */
+
+.opciones{
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.tarjeta{
+    background: var(--color-blanco);
+    width: 320px;
+    padding: 2.5rem;
+    border-radius: var(--radio-grande);
+    box-shadow: var(--sombra-suave);
+    transition: var(--transicion);
+}
+
+.tarjeta:hover{
+    transform: translateY(-8px);
+    box-shadow: var(--sombra-hover);
+}
+
+.tarjeta a{
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tarjeta h3{
+    font-size: 4rem;
+}
+
+.tarjeta h2{
+    color: var(--color-principal);
+    font-family: var(--fuente-titulos);
+}
+
+.tarjeta p{
+    text-align: center;
+    color: var(--texto-secundario);
+    line-height: 1.6;
+}
+
+/* FOOTER  */
+
+footer{
+    padding: 2rem;
+    text-align: center;
+    color: var(--texto-secundario);
+}

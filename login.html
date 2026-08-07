@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Iniciar sesión · Producción Serena</title>
+</head>
+<body class="pagina-login">
+
+    <main class="login-layout">
+
+        <!-- PANEL DE MARCA -->
+
+        <section class="panel-marca">
+
+            <div class="forma forma-uno"></div>
+            <div class="forma forma-dos"></div>
+
+            <div class="panel-marca-contenido">
+
+                <img
+                    src="img/2_DEF.-Identificador-SERENA.png"
+                    alt="Logo Pastelería Serena"
+                    class="logo-marca">
+
+                <p class="frase-marca">
+                    Cada pedido, organizado con el mismo cuidado con que se hornea.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- PANEL DE FORMULARIO -->
+
+        <section class="panel-formulario">
+
+            <div class="caja-formulario">
+
+                <h1>Bienvenido de nuevo</h1>
+
+                <p class="subtitulo">Inicia sesión para administrar las fichas de producción.</p>
+
+                <form id="formulario-login" autocomplete="off">
+
+                    <label for="correo">Correo</label>
+
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        placeholder="tucorreo@ejemplo.com"
+                        required
+                        autofocus>
+
+                    <label for="clave">Contraseña</label>
+
+                    <div class="campo-clave">
+
+                        <input
+                            type="password"
+                            id="clave"
+                            name="clave"
+                            placeholder="••••••••"
+                            minlength="6"
+                            required>
+
+                        <button
+                            type="button"
+                            id="mostrar-clave"
+                            class="boton-mostrar-clave"
+                            aria-label="Mostrar contraseña">
+
+                            👁️
+
+                        </button>
+
+                    </div>
+
+                    <div class="fila-opciones">
+
+                        <button type="button" id="olvide-clave" class="enlace-olvide">
+                            ¿Olvidaste tu contraseña?
+                        </button>
+
+                    </div>
+
+                    <p class="mensaje-error" id="mensaje-error" role="alert"></p>
+                    <p class="mensaje-exito" id="mensaje-exito" role="status"></p>
+
+                    <button type="submit" class="boton-guardar" id="boton-login">
+                        Iniciar sesión
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/login.js"></script>
+
+</body>
+</html>
