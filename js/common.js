@@ -6,6 +6,8 @@
 
 const COLECCION_FICHAS = "fichas";
 const DOC_CONTADOR = "contadorPedidos";
+const COLECCION_INGREDIENTES = "ingredientes";
+const COLECCION_RECETAS = "recetas";
 
 /* ---------- Utilidades generales ---------- */
 
@@ -17,6 +19,11 @@ function formatearFecha(fechaISO) {
     if (!anio || !mes || !dia) return fechaISO;
 
     return `${dia}/${mes}/${anio}`;
+}
+
+function formatearMoneda(numero) {
+    const valor = Number(numero) || 0;
+    return "$" + Math.round(valor).toLocaleString("es-CO");
 }
 
 function formatearFechaHora(fechaISO) {
@@ -69,6 +76,121 @@ async function guardarFicha(ficha) {
 
 async function eliminarFicha(id) {
     await refFichas().doc(id).delete();
+}
+
+/* ---------- Ingredientes (Firestore) ---------- */
+
+function refIngredientes() {
+    return db.collection(COLECCION_INGREDIENTES);
+}
+
+async function obtenerIngredientes() {
+    const snapshot = await refIngredientes().orderBy("nombre").get();
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+}
+
+async function obtenerIngredientePorId(id) {
+    const doc = await refIngredientes().doc(id).get();
+    return doc.exists ? { id: doc.id, ...doc.data() } : null;
+}
+
+async function guardarIngrediente(ingrediente) {
+    const { id, ...datos } = ingrediente;
+
+    if (id) {
+        await refIngredientes().doc(id).set(datos, { merge: true });
+        return { id, ...datos };
+    }
+
+    const referencia = await refIngredientes().add(datos);
+    return { id: referencia.id, ...datos };
+}
+
+async function eliminarIngrediente(id) {
+    await refIngredientes().doc(id).delete();
+}
+
+/* Costo por unidad de compra (por gramo, mililitro o unidad), a partir de lo
+   que costó la presentación completa que se compró. Ej: bolsa de harina de
+   1000 g por $3.500 → cuesta $3.5 por gramo. */
+function calcularCostoUnitario(ingrediente) {
+    const precio = Number(ingrediente.precioPresentacion) || 0;
+    const cantidad = Number(ingrediente.cantidadPresentacion) || 0;
+    if (cantidad === 0) return 0;
+    return precio / cantidad;
+}
+
+/* Algunos ingredientes se compran por unidad (una barra, una bolsa) pero se
+   usan en las recetas por peso o volumen (gramos, mililitros). Cuando el
+   ingrediente tiene esa equivalencia guardada (cuánto pesa/mide UNA unidad),
+   las recetas deben medirse y costearse en esa unidad real de uso en vez de
+   en "unidades" sueltas. */
+function tieneEquivalencia(ingrediente) {
+    return ingrediente.unidad === "unidad" &&
+        Number(ingrediente.equivalenciaCantidad) > 0 &&
+        !!ingrediente.equivalenciaUnidad;
+}
+
+/* Unidad en la que se debe medir este ingrediente dentro de una receta. */
+function obtenerUnidadDeUso(ingrediente) {
+    return tieneEquivalencia(ingrediente) ? ingrediente.equivalenciaUnidad : ingrediente.unidad;
+}
+
+/* Costo por gramo/mililitro/unidad, ya en la unidad real de uso. */
+function calcularCostoPorUnidadDeUso(ingrediente) {
+    const costoPorUnidadCompra = calcularCostoUnitario(ingrediente);
+
+    if (!tieneEquivalencia(ingrediente)) return costoPorUnidadCompra;
+
+    const equivalencia = Number(ingrediente.equivalenciaCantidad) || 0;
+    if (equivalencia === 0) return 0;
+
+    return costoPorUnidadCompra / equivalencia;
+}
+
+/* ---------- Recetas / calculadora de costos (Firestore) ---------- */
+
+function refRecetas() {
+    return db.collection(COLECCION_RECETAS);
+}
+
+async function obtenerRecetas() {
+    const snapshot = await refRecetas().get();
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+}
+
+async function obtenerRecetaPorId(id) {
+    const doc = await refRecetas().doc(id).get();
+    return doc.exists ? { id: doc.id, ...doc.data() } : null;
+}
+
+async function guardarReceta(receta) {
+    const { id, ...datos } = receta;
+
+    if (id) {
+        await refRecetas().doc(id).set(datos, { merge: true });
+        return { id, ...datos };
+    }
+
+    const referencia = await refRecetas().add(datos);
+    return { id: referencia.id, ...datos };
+}
+
+async function eliminarReceta(id) {
+    await refRecetas().doc(id).delete();
+}
+
+/* Suma el costo de cada línea de ingrediente ya calculada (item.costo). */
+function calcularCostoIngredientes(itemsReceta) {
+    return (itemsReceta ?? []).reduce((total, item) => total + (Number(item.costo) || 0), 0);
+}
+
+/* costoTotal = ingredientes + mano de obra. precioVenta aplica el margen
+   de ganancia sobre ese costo total, igual que en la fórmula de GigiAd:
+   costo + mano de obra, y encima el % de ganancia deseado. */
+function calcularPrecioVenta(costoTotal, margenGanancia) {
+    const margen = Number(margenGanancia) || 0;
+    return costoTotal * (1 + margen / 100);
 }
 
 /* Genera y consume el siguiente número de pedido de forma atómica,

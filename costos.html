@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/historial.css">
+    <link rel="stylesheet" href="css/costos.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Calculadora de costos · Producción Serena</title>
+</head>
+<body class="verificando-sesion">
+
+    <div class="barra-sesion">
+        <span id="correo-usuario"></span>
+        <button type="button" id="cerrar-sesion">Cerrar sesión</button>
+    </div>
+
+    <header class="encabezado">
+
+        <nav class="ruta">
+
+            <a href="index.html">Inicio</a>
+
+            <span>/</span>
+
+            <strong>Calculadora de costos</strong>
+
+        </nav>
+
+        <img src="img/2_DEF.-Identificador-SERENA.png" alt="Logo Serena" class="logo">
+
+        <h1>Calculadora de costos</h1>
+
+        <p>
+            Arma la receta con los ingredientes que ya registraste, agrega tu mano de obra
+            y el margen de ganancia que quieres, y obtén el precio de venta sugerido al instante.
+        </p>
+
+    </header>
+
+    <main>
+
+        <section class="barra-superior barra-superior--acciones">
+
+            <a href="ingredientes.html" class="enlace-boton">
+                🧺 Gestionar ingredientes
+            </a>
+
+        </section>
+
+        <!-- RESUMEN -->
+
+        <aside class="resumen">
+
+            <h2>📌 Resumen de costos</h2>
+
+            <p>
+                <strong>Ingredientes:</strong>
+                <span id="resumen-ingredientes">$0</span>
+            </p>
+
+            <p>
+                <strong>Mano de obra:</strong>
+                <span id="resumen-mano-obra">$0</span>
+            </p>
+
+            <p>
+                <strong>Costo total:</strong>
+                <span id="resumen-costo-total">$0</span>
+            </p>
+
+            <p>
+                <strong>Margen aplicado:</strong>
+                <span id="resumen-margen">40%</span>
+            </p>
+
+            <p class="resumen__precio-venta">
+                <strong>Precio de venta sugerido</strong>
+                <span id="resumen-precio-venta">$0</span>
+            </p>
+
+        </aside>
+
+        <!-- FORMULARIO -->
+
+        <form id="formulario-receta" autocomplete="off">
+
+            <fieldset>
+
+                <legend id="titulo-formulario">➕ Nueva receta</legend>
+
+                <label for="nombre-receta">Nombre de la receta</label>
+
+                <input
+                    type="text"
+                    id="nombre-receta"
+                    name="nombre-receta"
+                    placeholder="Ej: Torta de chocolate (molde #2)"
+                    required>
+
+            </fieldset>
+
+            <fieldset>
+
+                <legend>🧾 Ingredientes de la receta</legend>
+
+                <section class="dos-columnas">
+
+                    <section>
+
+                        <label for="selector-ingrediente">Ingrediente</label>
+
+                        <select id="selector-ingrediente">
+                            <option value="">Selecciona un ingrediente</option>
+                        </select>
+
+                    </section>
+
+                    <section>
+
+                        <label for="cantidad-ingrediente">Cantidad usada <span id="unidad-cantidad-ingrediente"></span></label>
+
+                        <input
+                            type="number"
+                            id="cantidad-ingrediente"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Ej: 500">
+
+                    </section>
+
+                </section>
+
+                <button type="button" id="agregar-ingrediente" class="boton-agregar">
+                    ➕ Agregar a la receta
+                </button>
+
+                <p class="aviso-sin-ingredientes-base" id="aviso-sin-ingredientes-base" style="display:none;">
+                    Todavía no tienes ingredientes registrados.
+                    <a href="ingredientes.html">Regístralos aquí</a> antes de armar la receta.
+                </p>
+
+                <ul class="ingredientes-receta" id="lista-ingredientes-receta"></ul>
+
+                <p class="sin-fichas" id="sin-ingredientes-receta">
+                    Aún no agregaste ingredientes a esta receta.
+                </p>
+
+            </fieldset>
+
+            <fieldset>
+
+                <legend>💰 Mano de obra y ganancia</legend>
+
+                <section class="dos-columnas">
+
+                    <section>
+
+                        <label for="mano-de-obra">Mano de obra</label>
+
+                        <input
+                            type="number"
+                            id="mano-de-obra"
+                            min="0"
+                            step="1"
+                            value="0">
+
+                    </section>
+
+                    <section>
+
+                        <label for="margen-ganancia">Margen de ganancia (%)</label>
+
+                        <input
+                            type="number"
+                            id="margen-ganancia"
+                            min="0"
+                            step="1"
+                            value="40">
+
+                    </section>
+
+                </section>
+
+            </fieldset>
+
+            <menu class="acciones">
+
+                <button type="submit" class="boton-guardar" id="boton-guardar-receta">
+                    💾 Guardar receta
+                </button>
+
+                <button type="button" id="cancelar-edicion-receta" class="boton-limpiar" style="display:none;">
+                    ✖ Cancelar edición
+                </button>
+
+            </menu>
+
+        </form>
+
+        <!-- RECETAS GUARDADAS -->
+
+        <section class="recetas-guardadas">
+
+            <h2 class="titulo-lista">Tus recetas</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Receta</th>
+
+                        <th>Costo total</th>
+
+                        <th>Precio de venta</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tabla-recetas"></tbody>
+
+            </table>
+
+            <p class="sin-fichas" id="sin-recetas" style="display:none;">
+                Aún no has guardado ninguna receta.
+            </p>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <small> © 2026 Producción Serena </small>
+
+    </footer>
+
+    <dialog class="modal" id="modal-detalle-receta">
+
+        <div class="contenido-modal">
+
+            <div class="cabecera-modal">
+
+                <h2>📌 Detalle de la receta</h2>
+
+                <button type="button" class="cerrar-modal" id="cerrar-modal-receta">✖</button>
+
+            </div>
+
+            <div id="detalle-receta"></div>
+
+        </div>
+
+    </dialog>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/costos.js"></script>
+
+</body>
+</html>

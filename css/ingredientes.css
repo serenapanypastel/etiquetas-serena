@@ -1,0 +1,64 @@
+/* ===========================================================
+   INGREDIENTES.CSS
+   Ajustes propios de la página de ingredientes: cancela el grid
+   de dos columnas de formulario.css (ese layout es para
+   nuevaficha.html) y agrega el enlace cruzado a la calculadora.
+   =========================================================== */
+
+main{
+    display: block;
+}
+
+.barra-superior--acciones{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.enlace-boton{
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    text-decoration: none;
+    background: var(--color-principal);
+    color: #062626;
+    font-weight: 600;
+    padding: .9rem 1.6rem;
+    border-radius: var(--radio-pill);
+    transition: var(--transicion);
+}
+
+.enlace-boton:hover{
+    background: var(--color-principal-claro);
+    transform: translateY(-3px);
+}
+
+.ayuda-equivalencia{
+    margin-top: 1.5rem;
+    color: var(--texto-secundario);
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+.costo-unitario-previsualizacion{
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-mediano);
+    color: var(--texto-secundario);
+}
+
+.costo-unitario-previsualizacion strong{
+    color: var(--color-principal);
+    font-size: 1.2rem;
+}
+
+.titulo-lista{
+    font-family: var(--fuente-titulos);
+    color: var(--texto-principal);
+    margin: 3rem 0 0;
+}
+
+.lista-ingredientes .barra-superior{
+    margin-top: 1rem;
+}

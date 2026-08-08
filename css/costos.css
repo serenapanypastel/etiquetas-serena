@@ -1,0 +1,146 @@
+/* ===========================================================
+   COSTOS.CSS
+   La calculadora reutiliza el grid de dos columnas de
+   formulario.css (aside .resumen + form), así que aquí solo van
+   los elementos propios: enlace cruzado, lista de ingredientes
+   agregados a la receta y el precio de venta destacado.
+   =========================================================== */
+
+.barra-superior--acciones{
+    display: flex;
+    justify-content: flex-end;
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.enlace-boton{
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    text-decoration: none;
+    background: var(--color-principal);
+    color: #062626;
+    font-weight: 600;
+    padding: .9rem 1.6rem;
+    border-radius: var(--radio-pill);
+    transition: var(--transicion);
+}
+
+.enlace-boton:hover{
+    background: var(--color-principal-claro);
+    transform: translateY(-3px);
+}
+
+/* Precio de venta: la línea más importante del resumen */
+
+.resumen__precio-venta{
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-borde);
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: .3rem;
+}
+
+.resumen__precio-venta strong{
+    color: var(--texto-secundario);
+    font-weight: 600;
+    font-size: .95rem;
+}
+
+.resumen__precio-venta span{
+    font-family: var(--fuente-titulos);
+    font-size: 2rem;
+    color: var(--color-principal);
+}
+
+/* Botón para agregar un ingrediente a la lista de la receta */
+
+.boton-agregar{
+    border: none;
+    cursor: pointer;
+    background: var(--color-secundario);
+    color: #4a2d1c;
+    padding: .9rem 1.6rem;
+    border-radius: var(--radio-pill);
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: var(--transicion);
+}
+
+.boton-agregar:hover{
+    transform: translateY(-3px);
+}
+
+.aviso-sin-ingredientes-base{
+    margin-top: 1rem;
+    color: var(--texto-secundario);
+}
+
+.aviso-sin-ingredientes-base a{
+    color: var(--color-principal);
+}
+
+/* Lista de ingredientes ya agregados a la receta que se está armando */
+
+.ingredientes-receta{
+    list-style: none;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+}
+
+.ingredientes-receta li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-mediano);
+    padding: .9rem 1.2rem;
+}
+
+.ingredientes-receta .item-nombre{
+    font-weight: 600;
+    color: var(--texto-principal);
+}
+
+.ingredientes-receta .item-detalle{
+    color: var(--texto-secundario);
+    font-size: .9rem;
+}
+
+.ingredientes-receta .item-costo{
+    color: var(--color-principal);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ingredientes-receta button{
+    border: none;
+    cursor: pointer;
+    background: rgba(255, 132, 108, .15);
+    color: var(--texto-principal);
+    border-radius: var(--radio-pequeno);
+    padding: .5rem .7rem;
+    transition: var(--transicion);
+}
+
+.ingredientes-receta button:hover{
+    background: rgba(255, 132, 108, .3);
+}
+
+/* Recetas guardadas: ocupa el ancho completo del grid */
+
+.recetas-guardadas{
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+}
+
+.titulo-lista{
+    font-family: var(--fuente-titulos);
+    color: var(--texto-principal);
+    margin: 0 0 1.5rem;
+}

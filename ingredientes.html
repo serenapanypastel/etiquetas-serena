@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/historial.css">
+    <link rel="stylesheet" href="css/ingredientes.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Ingredientes · Producción Serena</title>
+</head>
+<body class="verificando-sesion">
+
+    <div class="barra-sesion">
+        <span id="correo-usuario"></span>
+        <button type="button" id="cerrar-sesion">Cerrar sesión</button>
+    </div>
+
+    <header class="encabezado">
+
+        <nav class="ruta">
+
+            <a href="index.html">Inicio</a>
+
+            <span>/</span>
+
+            <strong>Ingredientes</strong>
+
+        </nav>
+
+        <img src="img/2_DEF.-Identificador-SERENA.png" alt="Logo Serena" class="logo">
+
+        <h1>Ingredientes</h1>
+
+        <p>
+            Registra cada ingrediente con el precio y la cantidad de la presentación que compraste.
+            El costo por gramo, mililitro o unidad se calcula solo, y esos ingredientes quedan
+            disponibles para armar recetas en la calculadora de costos.
+        </p>
+
+    </header>
+
+    <main>
+
+        <section class="barra-superior barra-superior--acciones">
+
+            <a href="costos.html" class="enlace-boton">
+                🧮 Ir a la calculadora de costos
+            </a>
+
+        </section>
+
+        <form id="formulario-ingrediente" autocomplete="off">
+
+            <fieldset>
+
+                <legend id="titulo-formulario">➕ Nuevo ingrediente</legend>
+
+                <section class="dos-columnas">
+
+                    <section>
+
+                        <label for="nombre-ingrediente">Nombre</label>
+
+                        <input
+                            type="text"
+                            id="nombre-ingrediente"
+                            name="nombre-ingrediente"
+                            placeholder="Ej: Harina de trigo"
+                            required>
+
+                    </section>
+
+                    <section>
+
+                        <label for="unidad-ingrediente">Unidad de medida</label>
+
+                        <select id="unidad-ingrediente" name="unidad-ingrediente" required>
+                            <option value="">Selecciona una unidad</option>
+                            <option value="g">Gramos (g)</option>
+                            <option value="kg">Kilogramos (kg)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                            <option value="l">Litros (l)</option>
+                            <option value="unidad">Unidad</option>
+                        </select>
+
+                    </section>
+
+                    <section>
+
+                        <label for="cantidad-presentacion">Cantidad que compraste</label>
+
+                        <input
+                            type="number"
+                            id="cantidad-presentacion"
+                            name="cantidad-presentacion"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Ej: 1000"
+                            required>
+
+                    </section>
+
+                    <section>
+
+                        <label for="precio-presentacion">Precio de esa presentación</label>
+
+                        <input
+                            type="number"
+                            id="precio-presentacion"
+                            name="precio-presentacion"
+                            min="0"
+                            step="1"
+                            placeholder="Ej: 3500"
+                            required>
+
+                    </section>
+
+                </section>
+
+                <p class="ayuda-equivalencia" id="ayuda-equivalencia" style="display:none;">
+                    Como compras esto por unidad (barra, bolsa, paquete...), dinos cuánto pesa
+                    o mide cada una para poder calcular su costo por gramo o mililitro y usarlo
+                    así en las recetas.
+                </p>
+
+                <section class="dos-columnas" id="grupo-equivalencia" style="display:none;">
+
+                    <section>
+
+                        <label for="equivalencia-cantidad">¿Cuánto pesa o mide una unidad?</label>
+
+                        <input
+                            type="number"
+                            id="equivalencia-cantidad"
+                            name="equivalencia-cantidad"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Ej: 1000">
+
+                    </section>
+
+                    <section>
+
+                        <label for="equivalencia-unidad">En</label>
+
+                        <select id="equivalencia-unidad" name="equivalencia-unidad">
+                            <option value="g">Gramos (g)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                        </select>
+
+                    </section>
+
+                </section>
+
+                <p class="costo-unitario-previsualizacion">
+                    Costo por unidad: <strong id="costo-unitario-preview">$0</strong>
+                </p>
+
+                <menu class="acciones">
+
+                    <button type="submit" class="boton-guardar" id="boton-guardar-ingrediente">
+                        💾 Guardar ingrediente
+                    </button>
+
+                    <button type="button" id="cancelar-edicion" class="boton-limpiar" style="display:none;">
+                        ✖ Cancelar edición
+                    </button>
+
+                </menu>
+
+            </fieldset>
+
+        </form>
+
+        <section class="lista-ingredientes">
+
+            <h2 class="titulo-lista">Tus ingredientes</h2>
+
+            <section class="barra-superior">
+
+                <input type="search" id="buscar" placeholder="Buscar ingrediente...">
+
+            </section>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Nombre</th>
+
+                        <th>Presentación</th>
+
+                        <th>Costo unitario</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tabla-ingredientes"></tbody>
+
+            </table>
+
+            <p class="sin-fichas" id="sin-ingredientes" style="display:none;">
+                Aún no has registrado ingredientes.
+            </p>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <small> © 2026 Producción Serena </small>
+
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/ingredientes.js"></script>
+
+</body>
+</html>
