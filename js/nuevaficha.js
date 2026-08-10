@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const botonGuardar = formulario.querySelector(".boton-guardar");
     const botonPdf = document.getElementById("descargar-pdf");
+    const botonImagen = document.getElementById("descargar-imagen");
 
     const idEditar = new URLSearchParams(window.location.search).get("id");
     let fichaActual = null;
@@ -123,6 +124,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         imprimirFicha(fichaActual);
+    });
+
+    /* ---------- Descargar como imagen (para la app Marklife) ---------- */
+
+    botonImagen.addEventListener("click", () => {
+        if (!formulario.reportValidity()) {
+            mostrarToast("Completa los campos requeridos antes de generar la imagen.");
+            return;
+        }
+
+        if (!fichaActual || huboCambiosSinGuardar()) {
+            mostrarToast("Guarda la ficha antes de descargar la imagen.");
+            return;
+        }
+
+        descargarEtiquetaComoImagen(fichaActual);
     });
 
     /* ---------- Limpiar formulario ---------- */

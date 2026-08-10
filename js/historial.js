@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (accion === "ver") verFicha(ficha);
         if (accion === "imprimir") imprimirFicha(ficha);
+        if (accion === "imagen") await descargarEtiquetaComoImagen(ficha);
         if (accion === "editar") window.location.href = "nuevaficha.html?id=" + id;
         if (accion === "eliminar") await confirmarEliminar(ficha);
     });
@@ -104,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td class="acciones" data-etiqueta="Acciones">
                     <button type="button" data-accion="ver" data-id="${ficha.id}" title="Ver detalle">👁️</button>
                     <button type="button" data-accion="imprimir" data-id="${ficha.id}" title="Descargar PDF">📄</button>
+                    <button type="button" data-accion="imagen" data-id="${ficha.id}" title="Descargar imagen">🖼️</button>
                     <button type="button" data-accion="editar" data-id="${ficha.id}" title="Editar">✏️</button>
                     <button type="button" class="eliminar" data-accion="eliminar" data-id="${ficha.id}" title="Eliminar">🗑️</button>
                 </td>

@@ -310,8 +310,8 @@ function construirHtmlEtiqueta(ficha) {
     `;
 }
 
-/* La P50 usa rollo continuo de 55mm de ancho, sin alto fijo: el alto de
-   cada etiqueta debe ajustarse a su contenido para que la impresora corte
+/* La P50 usa rollo continuo (ancho fijo, sin alto fijo): el alto de cada
+   etiqueta debe ajustarse a su contenido para que la impresora corte
    justo donde termina y no desperdicie papel ni la parta en dos páginas. */
 const ANCHO_ETIQUETA_MM = 50;
 const MARGEN_ETIQUETA_MM = 2;
@@ -373,4 +373,61 @@ function imprimirFicha(ficha) {
     window.addEventListener("afterprint", restaurarTitulo);
 
     window.print();
+}
+
+/* La P50 no aparece como impresora del sistema en Android/tablet (solo
+   imprime desde la app Marklife por Bluetooth). Esta función genera un
+   PNG de la etiqueta para guardarlo en la galería e importarlo ahí como
+   imagen y mandarlo a imprimir desde la propia app. */
+async function descargarEtiquetaComoImagen(ficha) {
+    if (!ficha) return;
+
+    if (typeof html2canvas === "undefined") {
+        mostrarToast("No se pudo generar la imagen: falta cargar html2canvas.");
+        return;
+    }
+
+    let contenedor = document.getElementById("etiqueta-imprimible");
+
+    if (!contenedor) {
+        contenedor = document.createElement("div");
+        contenedor.id = "etiqueta-imprimible";
+        contenedor.className = "etiqueta-imprimible";
+        document.body.appendChild(contenedor);
+    }
+
+    contenedor.innerHTML = construirHtmlEtiqueta(ficha);
+
+    // La colocamos fuera de la pantalla (no oculta con opacity/visibility:
+    // html2canvas no renderiza bien elementos invisibles) mientras se
+    // genera la imagen, así no se ve ni afecta el resto de la página.
+    const estiloPrevio = contenedor.getAttribute("style") || "";
+    contenedor.style.cssText = "display:block; position:absolute; left:-9999px; top:0;";
+
+    try {
+        const etiqueta = contenedor.querySelector(".etiqueta");
+
+        const canvas = await html2canvas(etiqueta, {
+            backgroundColor: "#ffffff",
+            scale: 4
+        });
+
+        const enlace = document.createElement("a");
+        enlace.href = canvas.toDataURL("image/png");
+        enlace.download = ficha.pedido + ".png";
+        document.body.appendChild(enlace);
+        enlace.click();
+        enlace.remove();
+
+        mostrarToast("Imagen de la etiqueta " + ficha.pedido + " descargada.");
+    } catch (error) {
+        console.error(error);
+        mostrarToast("No se pudo generar la imagen de la etiqueta.");
+    } finally {
+        if (estiloPrevio) {
+            contenedor.setAttribute("style", estiloPrevio);
+        } else {
+            contenedor.removeAttribute("style");
+        }
+    }
 }
