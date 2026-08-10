@@ -1,10 +1,11 @@
 /* =========================================================
-   ETIQUETA IMPRIMIBLE (usada para "Descargar PDF")
+   ETIQUETA IMPRIMIBLE (usada para "Comanda")
    Este bloque NUNCA se ve en pantalla (el contenedor está en
-   display:none salvo al imprimir), así que sus medidas están
-   pensadas directamente para el rollo térmico de la P50:
-   55mm de ancho, alto según contenido. Usa los colores propios
-   de la marca (no el tema oscuro del resto del sitio).
+   display:none salvo al generar la comanda con html2canvas, ver
+   descargarEtiquetaComoImagen en common.js), así que sus medidas
+   están pensadas directamente para el rollo de la P50: 50mm de
+   ancho. Usa los colores propios de la marca (no el tema oscuro
+   del resto del sitio).
    ========================================================= */
 
 .etiqueta-imprimible{
@@ -113,43 +114,4 @@
     font-size: 6pt;
     color: #6B7280;
     text-align: right;
-}
-
-/* ---------- Vista de impresión ---------- */
-
-@media print{
-
-    /* El body del sitio tiene su propio fondo y círculos decorativos con
-       blur en ::before/::after. Aunque ocultemos el resto del contenido,
-       esos fondos seguían detrás de la etiqueta al imprimir: forzamos
-       toda la página a blanco puro. */
-    html,
-    body{
-        background: #ffffff !important;
-        color-scheme: light only;
-    }
-
-    body::before,
-    body::after{
-        display: none !important;
-    }
-
-    /* Ocultamos por completo (display:none, no solo visibility) todo lo
-       que no sea la etiqueta. Con visibility:hidden el resto de la página
-       sigue ocupando espacio y eso generaba páginas de más / en blanco. */
-    body > *:not(.etiqueta-imprimible){
-        display: none !important;
-    }
-
-    .etiqueta-imprimible{
-        display: block;
-    }
-
-    /* Alto de respaldo por si el cálculo dinámico (ver common.js) no llega
-       a aplicarse a tiempo. "auto" no es un valor válido para el alto de
-       @page, así que dejamos un alto fijo generoso como plan B. */
-    @page{
-        size: 50mm 100mm;
-        margin: 2mm;
-    }
 }

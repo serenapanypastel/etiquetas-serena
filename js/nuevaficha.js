@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const entregaResumen = document.getElementById("resumen-entrega");
 
     const botonGuardar = formulario.querySelector(".boton-guardar");
-    const botonPdf = document.getElementById("descargar-pdf");
     const botonImagen = document.getElementById("descargar-imagen");
 
     const idEditar = new URLSearchParams(window.location.search).get("id");
@@ -110,32 +109,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    /* ---------- Descargar / imprimir como PDF ---------- */
-
-    botonPdf.addEventListener("click", () => {
-        if (!formulario.reportValidity()) {
-            mostrarToast("Completa los campos requeridos antes de generar el PDF.");
-            return;
-        }
-
-        if (!fichaActual || huboCambiosSinGuardar()) {
-            mostrarToast("Guarda la ficha antes de descargarla en PDF.");
-            return;
-        }
-
-        imprimirFicha(fichaActual);
-    });
-
     /* ---------- Descargar como imagen (para la app Marklife) ---------- */
 
     botonImagen.addEventListener("click", () => {
         if (!formulario.reportValidity()) {
-            mostrarToast("Completa los campos requeridos antes de generar la imagen.");
+            mostrarToast("Completa los campos requeridos antes de generar la comanda.");
             return;
         }
 
         if (!fichaActual || huboCambiosSinGuardar()) {
-            mostrarToast("Guarda la ficha antes de descargar la imagen.");
+            mostrarToast("Guarda la ficha antes de descargar la comanda.");
             return;
         }
 

@@ -310,71 +310,6 @@ function construirHtmlEtiqueta(ficha) {
     `;
 }
 
-/* La P50 usa rollo continuo (ancho fijo, sin alto fijo): el alto de cada
-   etiqueta debe ajustarse a su contenido para que la impresora corte
-   justo donde termina y no desperdicie papel ni la parta en dos páginas. */
-const ANCHO_ETIQUETA_MM = 50;
-const MARGEN_ETIQUETA_MM = 2;
-
-function ajustarAltoPaginaEtiqueta(contenedor) {
-    // Medimos el alto real fuera de pantalla, sin afectar el layout visible.
-    const estiloPrevio = contenedor.getAttribute("style") || "";
-    contenedor.style.cssText = "display:block; position:absolute; left:-9999px; top:0; visibility:hidden;";
-
-    const etiqueta = contenedor.querySelector(".etiqueta");
-    const altoPx = etiqueta ? etiqueta.getBoundingClientRect().height : 0;
-
-    if (estiloPrevio) {
-        contenedor.setAttribute("style", estiloPrevio);
-    } else {
-        contenedor.removeAttribute("style");
-    }
-
-    const altoContenidoMm = (altoPx * 25.4) / 96;
-    const altoPaginaMm = Math.ceil(altoContenidoMm + (MARGEN_ETIQUETA_MM * 2) + 2);
-
-    let estiloPagina = document.getElementById("estilo-pagina-etiqueta");
-    if (!estiloPagina) {
-        estiloPagina = document.createElement("style");
-        estiloPagina.id = "estilo-pagina-etiqueta";
-        document.head.appendChild(estiloPagina);
-    }
-
-    estiloPagina.textContent =
-        `@page { size: ${ANCHO_ETIQUETA_MM}mm ${altoPaginaMm}mm; margin: ${MARGEN_ETIQUETA_MM}mm; }`;
-}
-
-function imprimirFicha(ficha) {
-    if (!ficha) return;
-
-    let contenedor = document.getElementById("etiqueta-imprimible");
-
-    if (!contenedor) {
-        contenedor = document.createElement("div");
-        contenedor.id = "etiqueta-imprimible";
-        contenedor.className = "etiqueta-imprimible";
-        document.body.appendChild(contenedor);
-    }
-
-    contenedor.innerHTML = construirHtmlEtiqueta(ficha);
-
-    ajustarAltoPaginaEtiqueta(contenedor);
-
-    // Cambiamos el título de la página para que, si el usuario elige
-    // "Guardar como PDF" en el diálogo de impresión, el archivo se
-    // descargue con el número de pedido como nombre (ej. PED-0001.pdf).
-    const tituloOriginal = document.title;
-    document.title = ficha.pedido;
-
-    const restaurarTitulo = () => {
-        document.title = tituloOriginal;
-        window.removeEventListener("afterprint", restaurarTitulo);
-    };
-    window.addEventListener("afterprint", restaurarTitulo);
-
-    window.print();
-}
-
 /* La P50 no aparece como impresora del sistema en Android/tablet (solo
    imprime desde la app Marklife por Bluetooth). Esta función genera un
    PNG de la etiqueta para guardarlo en la galería e importarlo ahí como
@@ -419,10 +354,10 @@ async function descargarEtiquetaComoImagen(ficha) {
         enlace.click();
         enlace.remove();
 
-        mostrarToast("Imagen de la etiqueta " + ficha.pedido + " descargada.");
+        mostrarToast("Comanda " + ficha.pedido + " descargada.");
     } catch (error) {
         console.error(error);
-        mostrarToast("No se pudo generar la imagen de la etiqueta.");
+        mostrarToast("No se pudo generar la comanda.");
     } finally {
         if (estiloPrevio) {
             contenedor.setAttribute("style", estiloPrevio);
