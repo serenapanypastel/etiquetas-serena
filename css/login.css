@@ -1,5 +1,7 @@
 /* =========================================================
-   PÁGINA DE LOGIN — tema oscuro
+   PÁGINA DE LOGIN — tema claro
+   (los nombres de clase conservan el sufijo "-oscura/-oscuro"
+   por compatibilidad con login.html; solo cambiaron los colores)
    ========================================================= */
 
 *{
@@ -10,7 +12,7 @@
 
 body.pagina-login-oscura{
     font-family: var(--fuente-texto);
-    background: #0E1316;
+    background: var(--color-fondo);
 }
 
 .login-oscuro{
@@ -64,7 +66,7 @@ body.pagina-login-oscura{
     font-weight: 700;
     font-size: 2.2rem;
     line-height: 1.25;
-    color: #F5F5F5;
+    color: var(--texto-principal);
     margin-bottom: 2.4rem;
 }
 
@@ -82,7 +84,7 @@ body.pagina-login-oscura{
     transform: translateY(-50%);
     width: 18px;
     height: 18px;
-    color: #7B8894;
+    color: var(--texto-secundario);
     display: flex;
 }
 
@@ -93,9 +95,9 @@ body.pagina-login-oscura{
 
 .campo-icono input{
     width: 100%;
-    background: #1B2126;
-    border: 1px solid #262D33;
-    color: #F5F5F5;
+    background: var(--color-superficie-alt);
+    border: 1px solid var(--color-borde);
+    color: var(--texto-principal);
     border-radius: 999px;
     padding: 1rem 1.2rem 1rem 3.1rem;
     font-family: inherit;
@@ -105,7 +107,7 @@ body.pagina-login-oscura{
 }
 
 .campo-icono input::placeholder{
-    color: #6B7580;
+    color: var(--texto-secundario);
 }
 
 .campo-icono input:focus{
@@ -125,7 +127,7 @@ body.pagina-login-oscura{
     border: none;
     background: none;
     cursor: pointer;
-    color: #7B8894;
+    color: var(--texto-secundario);
     width: 18px;
     height: 18px;
     padding: 0;
@@ -138,7 +140,7 @@ body.pagina-login-oscura{
 }
 
 .boton-mostrar-clave:hover{
-    color: #F5F5F5;
+    color: var(--texto-principal);
 }
 
 /* ---------- ENLACES Y MENSAJES ---------- */
@@ -153,25 +155,25 @@ body.pagina-login-oscura{
     border: none;
     background: none;
     cursor: pointer;
-    color: #8FE3E3;
+    color: var(--color-principal-oscuro);
     font-size: .85rem;
     font-weight: 600;
     transition: .2s ease;
 }
 
 .enlace-olvide:hover{
-    color: #ffffff;
+    color: var(--color-principal);
 }
 
 .mensaje-error{
-    color: #FF9C8A;
+    color: #C0392B;
     font-size: .85rem;
     min-height: 1.1rem;
     margin-bottom: .6rem;
 }
 
 .mensaje-exito{
-    color: #7FE3D0;
+    color: #1E8F6F;
     font-size: .85rem;
     min-height: 1.1rem;
     margin-bottom: .6rem;
@@ -184,8 +186,8 @@ body.pagina-login-oscura{
     padding: 1rem;
     border: none;
     border-radius: 999px;
-    background: #ffffff;
-    color: #14171C;
+    background: var(--color-principal-oscuro);
+    color: #ffffff;
     font-family: inherit;
     font-weight: 700;
     font-size: 1rem;
@@ -195,7 +197,7 @@ body.pagina-login-oscura{
 }
 
 .boton-login-oscuro:hover{
-    background: #E9E9E9;
+    background: #005C5C;
 }
 
 .boton-login-oscuro:disabled{
@@ -205,7 +207,7 @@ body.pagina-login-oscura{
 
 .pie-login{
     text-align: center;
-    color: #6B7580;
+    color: var(--texto-secundario);
     font-size: .85rem;
     margin-top: 1.8rem;
 }

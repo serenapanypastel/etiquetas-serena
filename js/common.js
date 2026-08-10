@@ -78,6 +78,17 @@ async function eliminarFicha(id) {
     await refFichas().doc(id).delete();
 }
 
+/* Una ficha puede tener hasta 3 pares "bizcochos + molde" (campo
+   ficha.moldes). Las fichas guardadas antes de admitir varios moldes solo
+   tienen los campos sueltos ficha.bizcochos / ficha.molde: este helper
+   normaliza ambos casos a un mismo arreglo para no duplicar esa lógica
+   en cada pantalla que muestra o imprime una ficha. */
+function obtenerMoldesFicha(ficha) {
+    if (Array.isArray(ficha.moldes) && ficha.moldes.length) return ficha.moldes;
+    if (ficha.molde) return [{ bizcochos: ficha.bizcochos, molde: ficha.molde }];
+    return [];
+}
+
 /* ---------- Ingredientes (Firestore) ---------- */
 
 function refIngredientes() {
@@ -193,13 +204,32 @@ function calcularPrecioVenta(costoTotal, margenGanancia) {
     return costoTotal * (1 + margen / 100);
 }
 
+/* Si el contador no existe o quedó con un valor inválido (por eso salía
+   "PED-0NaN"), reconstruye el número a partir del pedido más alto ya
+   guardado, para no reiniciar la numeración y crear pedidos duplicados. */
+async function calcularNumeroPedidoDesdeFichas() {
+    const fichas = await obtenerFichas();
+    let maximo = 0;
+
+    fichas.forEach((ficha) => {
+        const coincidencia = /^PED-(\d+)$/.exec(ficha.pedido || "");
+        if (!coincidencia) return;
+
+        const numero = Number(coincidencia[1]);
+        if (numero > maximo) maximo = numero;
+    });
+
+    return maximo;
+}
+
 /* Genera y consume el siguiente número de pedido de forma atómica,
    así dos personas guardando al mismo tiempo no reciben el mismo número. */
 async function generarNumeroPedido() {
     return db.runTransaction(async (transaccion) => {
         const doc = await transaccion.get(refContador());
-        const actual = doc.exists ? doc.data().valor : 0;
-        const siguiente = actual + 1;
+        const actual = doc.exists ? Number(doc.data().valor) : NaN;
+        const base = Number.isFinite(actual) ? actual : await calcularNumeroPedidoDesdeFichas();
+        const siguiente = base + 1;
 
         transaccion.set(refContador(), { valor: siguiente });
 
@@ -211,8 +241,9 @@ async function generarNumeroPedido() {
    para previsualizarlo mientras se llena el formulario. */
 async function previsualizarNumeroPedido() {
     const doc = await refContador().get();
-    const actual = doc.exists ? doc.data().valor : 0;
-    return "PED-" + String(actual + 1).padStart(4, "0");
+    const actual = doc.exists ? Number(doc.data().valor) : NaN;
+    const base = Number.isFinite(actual) ? actual : await calcularNumeroPedidoDesdeFichas();
+    return "PED-" + String(base + 1).padStart(4, "0");
 }
 
 /* ---------- Toast (aviso flotante) ---------- */
@@ -233,6 +264,19 @@ function mostrarToast(mensaje) {
 /* ---------- Etiqueta imprimible / PDF ---------- */
 
 function construirHtmlEtiqueta(ficha) {
+    const filasMoldes = obtenerMoldesFicha(ficha)
+        .map((item) => `<tr><td>${item.bizcochos}</td><td>${item.molde}</td></tr>`)
+        .join("");
+
+    const tablaMoldes = filasMoldes
+        ? `
+            <table class="etiqueta-tabla etiqueta-tabla-moldes">
+                <tr><th>Bizcochos</th><th>Molde</th></tr>
+                ${filasMoldes}
+            </table>
+        `
+        : "";
+
     return `
         <div class="etiqueta">
             <header class="etiqueta-encabezado">
@@ -244,10 +288,13 @@ function construirHtmlEtiqueta(ficha) {
 
             <table class="etiqueta-tabla">
                 <tr><th>Teléfono</th><td>${ficha.telefono || "-"}</td></tr>
-                <tr><th>Bizcochos</th><td>${ficha.bizcochos}</td></tr>
+            </table>
+
+            ${tablaMoldes}
+
+            <table class="etiqueta-tabla">
                 <tr><th>Sabor</th><td>${ficha.sabor}</td></tr>
                 <tr><th>Relleno</th><td>${ficha.relleno}</td></tr>
-                <tr><th>Molde</th><td>${ficha.molde}</td></tr>
                 <tr><th>Entrega</th><td>${formatearFecha(ficha.fechaEntrega)}</td></tr>
             </table>
 
@@ -263,6 +310,40 @@ function construirHtmlEtiqueta(ficha) {
     `;
 }
 
+/* La P50 usa rollo continuo de 55mm de ancho, sin alto fijo: el alto de
+   cada etiqueta debe ajustarse a su contenido para que la impresora corte
+   justo donde termina y no desperdicie papel ni la parta en dos páginas. */
+const ANCHO_ETIQUETA_MM = 50;
+const MARGEN_ETIQUETA_MM = 2;
+
+function ajustarAltoPaginaEtiqueta(contenedor) {
+    // Medimos el alto real fuera de pantalla, sin afectar el layout visible.
+    const estiloPrevio = contenedor.getAttribute("style") || "";
+    contenedor.style.cssText = "display:block; position:absolute; left:-9999px; top:0; visibility:hidden;";
+
+    const etiqueta = contenedor.querySelector(".etiqueta");
+    const altoPx = etiqueta ? etiqueta.getBoundingClientRect().height : 0;
+
+    if (estiloPrevio) {
+        contenedor.setAttribute("style", estiloPrevio);
+    } else {
+        contenedor.removeAttribute("style");
+    }
+
+    const altoContenidoMm = (altoPx * 25.4) / 96;
+    const altoPaginaMm = Math.ceil(altoContenidoMm + (MARGEN_ETIQUETA_MM * 2) + 2);
+
+    let estiloPagina = document.getElementById("estilo-pagina-etiqueta");
+    if (!estiloPagina) {
+        estiloPagina = document.createElement("style");
+        estiloPagina.id = "estilo-pagina-etiqueta";
+        document.head.appendChild(estiloPagina);
+    }
+
+    estiloPagina.textContent =
+        `@page { size: ${ANCHO_ETIQUETA_MM}mm ${altoPaginaMm}mm; margin: ${MARGEN_ETIQUETA_MM}mm; }`;
+}
+
 function imprimirFicha(ficha) {
     if (!ficha) return;
 
@@ -276,6 +357,8 @@ function imprimirFicha(ficha) {
     }
 
     contenedor.innerHTML = construirHtmlEtiqueta(ficha);
+
+    ajustarAltoPaginaEtiqueta(contenedor);
 
     // Cambiamos el título de la página para que, si el usuario elige
     // "Guardar como PDF" en el diálogo de impresión, el archivo se

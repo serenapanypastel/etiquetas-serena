@@ -74,7 +74,7 @@ body.verificando-sesion{
 .barra-sesion button{
     border: none;
     background: none;
-    color: var(--color-principal-claro);
+    color: var(--color-principal-oscuro);
     font-weight: 600;
     cursor: pointer;
     font-size: .9rem;

@@ -114,14 +114,18 @@ document.addEventListener("DOMContentLoaded", () => {
     function verFicha(ficha) {
         if (!modalDetalle || !contenedorDetalle) return;
 
+        const moldes = obtenerMoldesFicha(ficha);
+        const listaMoldes = moldes.length
+            ? moldes.map((item) => `${item.bizcochos} bizcocho${Number(item.bizcochos) === 1 ? "" : "s"} · molde ${item.molde}`).join("<br>")
+            : "-";
+
         contenedorDetalle.innerHTML = `
             <div class="item-modal"><strong>Pedido:</strong> ${ficha.pedido}</div>
             <div class="item-modal"><strong>Cliente:</strong> ${ficha.cliente}</div>
             <div class="item-modal"><strong>Teléfono:</strong> ${ficha.telefono || "-"}</div>
-            <div class="item-modal"><strong>Bizcochos:</strong> ${ficha.bizcochos}</div>
+            <div class="item-modal"><strong>Moldes:</strong> ${listaMoldes}</div>
             <div class="item-modal"><strong>Sabor:</strong> ${ficha.sabor}</div>
             <div class="item-modal"><strong>Relleno:</strong> ${ficha.relleno}</div>
-            <div class="item-modal"><strong>Molde:</strong> ${ficha.molde}</div>
             <div class="item-modal"><strong>Entrega:</strong> ${formatearFecha(ficha.fechaEntrega)}</div>
             <div class="item-modal"><strong>Observaciones:</strong> ${ficha.observaciones || "Sin observaciones"}</div>
             <div class="item-modal"><strong>Creada:</strong> ${formatearFechaHora(ficha.fechaCreacion)}</div>

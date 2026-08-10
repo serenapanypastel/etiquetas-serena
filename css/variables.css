@@ -4,26 +4,26 @@
 
     /* Colores de marca */
 
-    --color-principal: #00D1D6;
-    --color-principal-oscuro: #00A8AC;
+    --color-principal: #009B9B;
+    --color-principal-oscuro: #007373;
     --color-principal-claro: #8FE9E9;
 
     --color-secundario: #FFBF94;
     --color-acento: #FF846C;
     --color-acento-claro: #FF9C8A;
 
-    /* Base oscura */
+    /* Base clara */
 
-    --color-fondo: #0E1316;
-    --color-superficie: #171D22;
-    --color-superficie-alt: #1F262C;
+    --color-fondo: #F3F5F6;
+    --color-superficie: #FFFFFF;
+    --color-superficie-alt: #E7ECEE;
 
     --color-blanco: #FFFFFF;
 
-    --color-borde: #2A323A;
+    --color-borde: #DCE2E5;
 
-    --texto-principal: #F3F5F6;
-    --texto-secundario: #93A0AA;
+    --texto-principal: #171D22;
+    --texto-secundario: #5B6670;
 
     /* Tipografías */
 
@@ -37,11 +37,11 @@
     --radio-grande: 1.5rem;
     --radio-pill: 999px;
 
-    /* Sombras (pensadas para fondo oscuro) */
+    /* Sombras (pensadas para fondo claro) */
 
-    --sombra-suave: 0 10px 30px rgba(0, 0, 0, .35);
+    --sombra-suave: 0 10px 30px rgba(23, 29, 34, .08);
 
-    --sombra-hover: 0 18px 45px rgba(0, 0, 0, .5);
+    --sombra-hover: 0 18px 45px rgba(23, 29, 34, .14);
 
     /* Espaciados */
 

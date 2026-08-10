@@ -1,9 +1,10 @@
 /* =========================================================
    ETIQUETA IMPRIMIBLE (usada para "Descargar PDF")
-   A propósito NO usa las variables de tema oscuro del resto
-   del sitio: la etiqueta siempre debe imprimirse en claro
-   (texto oscuro sobre fondo blanco), sin importar el tema
-   que se vea en pantalla.
+   Este bloque NUNCA se ve en pantalla (el contenedor está en
+   display:none salvo al imprimir), así que sus medidas están
+   pensadas directamente para el rollo térmico de la P50:
+   55mm de ancho, alto según contenido. Usa los colores propios
+   de la marca (no el tema oscuro del resto del sitio).
    ========================================================= */
 
 .etiqueta-imprimible{
@@ -11,54 +12,70 @@
 }
 
 .etiqueta{
-    width: 320px;
-    padding: 1.5rem;
+    width: 46mm;
+    padding: 2mm;
     background: #ffffff;
-    border: 2px solid var(--color-principal-oscuro, #009B9B);
-    border-radius: var(--radio-mediano, 1rem);
     font-family: var(--fuente-texto);
     color: #222222;
+    /* Le dice al navegador que este bloque es de tema claro, así Chrome no
+       le "adivina" un fondo oscuro por su modo oscuro forzado. */
+    color-scheme: light only;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+}
+
+.etiqueta,
+.etiqueta *{
+    background-color: #ffffff;
+    background-image: none;
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+    outline: none;
+    /* Evita que el navegador (modo de alto contraste / accesibilidad del
+       sistema) le agregue sus propios fondos redondeados a las filas de
+       la tabla, encima de nuestros estilos. */
+    forced-color-adjust: none;
 }
 
 .etiqueta-encabezado{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px dashed #d8d8d8;
-    padding-bottom: .8rem;
-    margin-bottom: .8rem;
+    padding-bottom: 1.5mm;
+    margin-bottom: 1.5mm;
 }
 
 .etiqueta-marca{
     font-family: var(--fuente-titulos);
     font-weight: bold;
+    font-size: 9pt;
     color: var(--color-principal-oscuro, #009B9B);
 }
 
 .etiqueta-pedido{
     font-weight: bold;
+    font-size: 9pt;
     color: #222222;
 }
 
 .etiqueta-cliente{
-    margin-bottom: .8rem;
-    font-size: 1.2rem;
+    margin-bottom: 1.5mm;
+    font-size: 10pt;
     color: #111111;
 }
 
 .etiqueta-tabla{
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: .8rem;
+    margin-bottom: 1.5mm;
 }
 
 .etiqueta-tabla th,
 .etiqueta-tabla td{
     text-align: left;
-    padding: .3rem 0;
-    font-size: .9rem;
+    padding: .8mm 0;
+    font-size: 7pt;
     color: #222222;
 }
 
@@ -68,15 +85,32 @@
     font-weight: 600;
 }
 
+/* Fila "Bizcochos | Molde": dos columnas iguales, bizcochos a la
+   izquierda y tamaño del molde a la derecha (una fila por molde). */
+.etiqueta-tabla-moldes th,
+.etiqueta-tabla-moldes td{
+    width: 50%;
+    font-weight: 600;
+}
+
+.etiqueta-tabla-moldes th{
+    color: #6B7280;
+}
+
+.etiqueta-tabla-moldes td{
+    font-weight: 400;
+    color: #222222;
+}
+
 .etiqueta-observaciones{
-    font-size: .85rem;
-    margin-bottom: .8rem;
+    font-size: 6.5pt;
+    margin-bottom: 1.5mm;
     line-height: 1.4;
     color: #222222;
 }
 
 .etiqueta-pie{
-    font-size: .7rem;
+    font-size: 6pt;
     color: #6B7280;
     text-align: right;
 }
@@ -85,29 +119,37 @@
 
 @media print{
 
-    body *{
-        visibility: hidden;
+    /* El body del sitio tiene su propio fondo y círculos decorativos con
+       blur en ::before/::after. Aunque ocultemos el resto del contenido,
+       esos fondos seguían detrás de la etiqueta al imprimir: forzamos
+       toda la página a blanco puro. */
+    html,
+    body{
+        background: #ffffff !important;
+        color-scheme: light only;
     }
 
-    .etiqueta-imprimible,
-    .etiqueta-imprimible *{
-        visibility: visible;
+    body::before,
+    body::after{
+        display: none !important;
+    }
+
+    /* Ocultamos por completo (display:none, no solo visibility) todo lo
+       que no sea la etiqueta. Con visibility:hidden el resto de la página
+       sigue ocupando espacio y eso generaba páginas de más / en blanco. */
+    body > *:not(.etiqueta-imprimible){
+        display: none !important;
     }
 
     .etiqueta-imprimible{
         display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: #ffffff;
     }
 
-    .etiqueta{
-        border-color: #000;
-    }
-
+    /* Alto de respaldo por si el cálculo dinámico (ver common.js) no llega
+       a aplicarse a tiempo. "auto" no es un valor válido para el alto de
+       @page, así que dejamos un alto fijo generoso como plan B. */
     @page{
-        size: 90mm 130mm;
-        margin: 8mm;
+        size: 50mm 100mm;
+        margin: 2mm;
     }
 }

@@ -10,10 +10,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const campoPedido = document.getElementById("pedido");
     const campoCliente = document.getElementById("cliente");
     const campoTelefono = document.getElementById("telefono");
-    const campoBizcochos = document.getElementById("bizcochos");
+
+    // Hasta 3 pares "bizcochos + molde" por pedido. El 1 es obligatorio,
+    // el 2 y el 3 son opcionales (se ignoran si quedan vacíos).
+    const paresMolde = [
+        { bizcochos: document.getElementById("bizcochos-1"), molde: document.getElementById("molde-1") },
+        { bizcochos: document.getElementById("bizcochos-2"), molde: document.getElementById("molde-2") },
+        { bizcochos: document.getElementById("bizcochos-3"), molde: document.getElementById("molde-3") }
+    ];
+
     const campoSabor = document.getElementById("sabor");
     const campoRelleno = document.getElementById("relleno");
-    const campoMolde = document.getElementById("molde");
     const campoEntrega = document.getElementById("fecha-entrega");
     const campoObservaciones = document.getElementById("observaciones");
 
@@ -65,16 +72,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
             const pedido = fichaActual ? fichaActual.pedido : await generarNumeroPedido();
+            const moldes = leerMoldes();
 
             const ficha = {
                 id: fichaActual ? fichaActual.id : null,
                 pedido,
                 cliente: campoCliente.value.trim(),
                 telefono: campoTelefono.value.trim(),
-                bizcochos: Number(campoBizcochos.value),
+                moldes,
+                // Se mantienen por compatibilidad con fichas guardadas antes
+                // de admitir varios moldes (siempre reflejan el molde 1).
+                bizcochos: moldes[0] ? moldes[0].bizcochos : 0,
+                molde: moldes[0] ? moldes[0].molde : "",
                 sabor: campoSabor.value,
                 relleno: campoRelleno.value,
-                molde: campoMolde.value,
                 fechaEntrega: campoEntrega.value,
                 observaciones: campoObservaciones.value.trim(),
                 estado: "Guardada",
@@ -140,17 +151,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         campoPedido.value = ficha.pedido;
         campoCliente.value = ficha.cliente;
         campoTelefono.value = ficha.telefono || "";
-        campoBizcochos.value = ficha.bizcochos;
         campoSabor.value = ficha.sabor;
         campoRelleno.value = ficha.relleno;
-        campoMolde.value = ficha.molde;
         campoEntrega.value = ficha.fechaEntrega;
         campoObservaciones.value = ficha.observaciones || "";
+
+        const moldesGuardados = obtenerMoldesFicha(ficha);
+        paresMolde.forEach((par, indice) => {
+            const datos = moldesGuardados[indice];
+            par.bizcochos.value = datos ? datos.bizcochos : "";
+            par.molde.value = datos ? datos.molde : "";
+        });
 
         numeroPedidoResumen.textContent = ficha.pedido;
         estadoResumen.textContent = ficha.estado;
 
         botonGuardar.textContent = "💾 Actualizar ficha";
+    }
+
+    /* Lee los pares "bizcochos + molde" llenos del formulario (el 1 es
+       obligatorio; el 2 y el 3 se ignoran si quedan vacíos). */
+    function leerMoldes() {
+        return paresMolde
+            .map((par) => ({
+                bizcochos: Number(par.bizcochos.value),
+                molde: par.molde.value
+            }))
+            .filter((item) => item.molde && item.bizcochos > 0);
     }
 
     function actualizarResumenEntrega() {
@@ -165,10 +192,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return (
             fichaActual.cliente !== campoCliente.value.trim() ||
             fichaActual.telefono !== campoTelefono.value.trim() ||
-            fichaActual.bizcochos !== Number(campoBizcochos.value) ||
+            JSON.stringify(obtenerMoldesFicha(fichaActual)) !== JSON.stringify(leerMoldes()) ||
             fichaActual.sabor !== campoSabor.value ||
             fichaActual.relleno !== campoRelleno.value ||
-            fichaActual.molde !== campoMolde.value ||
             fichaActual.fechaEntrega !== campoEntrega.value ||
             fichaActual.observaciones !== campoObservaciones.value.trim()
         );
