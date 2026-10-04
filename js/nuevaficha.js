@@ -21,6 +21,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const campoSabor = document.getElementById("sabor");
     const campoRelleno = document.getElementById("relleno");
+
+    const campoTipoProducto = document.getElementById("tipoProducto");
+    const campoCantidadProducto = document.getElementById("cantidadProducto");
+
+    const campoTipoProducto1 = document.getElementById("tipoProducto1");
+    const campoCantidadProducto1 = document.getElementById("cantidadProducto1");
+
     const campoEntrega = document.getElementById("fecha-entrega");
     const campoObservaciones = document.getElementById("observaciones");
 
@@ -75,7 +82,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const moldes = leerMoldes();
 
             const ficha = {
-                id: fichaActual ? fichaActual.id : null,
+
+                id: fichaActual ? fichaActual.id : null, 
                 pedido,
                 cliente: campoCliente.value.trim(),
                 telefono: campoTelefono.value.trim(),
@@ -86,10 +94,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 molde: moldes[0] ? moldes[0].molde : "",
                 sabor: campoSabor.value,
                 relleno: campoRelleno.value,
+                tipoProducto: campoTipoProducto.value,
+                cantidadProducto: Number(campoCantidadProducto.value) || 0,
+                tipoProducto1: campoTipoProducto1.value,
+                cantidadProducto1: Number(campoCantidadProducto1.value) || 0,
                 fechaEntrega: campoEntrega.value,
                 observaciones: campoObservaciones.value.trim(),
                 estado: "Guardada",
-                fechaCreacion: fichaActual ? fichaActual.fechaCreacion : new Date().toISOString()
+                fechaCreacion: fichaActual
+                    ? fichaActual.fechaCreacion
+                    : new Date().toISOString()
             };
 
             const guardada = await guardarFicha(ficha);
@@ -153,6 +167,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         campoTelefono.value = ficha.telefono || "";
         campoSabor.value = ficha.sabor;
         campoRelleno.value = ficha.relleno;
+        campoTipoProducto.value = ficha.tipoProducto || "";
+        campoCantidadProducto.value = ficha.cantidadProducto || "";
+        campoTipoProducto1.value = ficha.tipoProducto1 || "";
+        campoCantidadProducto1.value = ficha.cantidadProducto1 || "";
         campoEntrega.value = ficha.fechaEntrega;
         campoObservaciones.value = ficha.observaciones || "";
 
@@ -195,6 +213,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             JSON.stringify(obtenerMoldesFicha(fichaActual)) !== JSON.stringify(leerMoldes()) ||
             fichaActual.sabor !== campoSabor.value ||
             fichaActual.relleno !== campoRelleno.value ||
+            fichaActual.tipoProducto !== campoTipoProducto.value ||
+            Number(fichaActual.cantidadProducto || 0) !== Number(campoCantidadProducto.value || 0) ||
             fichaActual.fechaEntrega !== campoEntrega.value ||
             fichaActual.observaciones !== campoObservaciones.value.trim()
         );

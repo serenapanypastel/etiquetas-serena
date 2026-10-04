@@ -115,3 +115,15 @@
     color: #6B7280;
     text-align: right;
 }
+
+.etiqueta-tabla-productos th {
+    padding-right: 6px;
+}
+
+.etiqueta-tabla-productos td {
+    padding-right: 12px;
+}
+
+.etiqueta-tabla-productos td:last-child {
+    padding-right: 0;
+}

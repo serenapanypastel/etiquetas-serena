@@ -126,6 +126,10 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="item-modal"><strong>Moldes:</strong> ${listaMoldes}</div>
             <div class="item-modal"><strong>Sabor:</strong> ${ficha.sabor}</div>
             <div class="item-modal"><strong>Relleno:</strong> ${ficha.relleno}</div>
+            ${ficha.tipoProducto ? `
+                <div class="item-modal"><strong>Producto:</strong> ${ficha.tipoProducto}</div>
+                <div class="item-modal"><strong>Cantidad:</strong> ${ficha.cantidadProducto || 0}</div>
+            ` : ""}
             <div class="item-modal"><strong>Entrega:</strong> ${formatearFecha(ficha.fechaEntrega)}</div>
             <div class="item-modal"><strong>Observaciones:</strong> ${ficha.observaciones || "Sin observaciones"}</div>
             <div class="item-modal"><strong>Creada:</strong> ${formatearFechaHora(ficha.fechaCreacion)}</div>

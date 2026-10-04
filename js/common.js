@@ -264,6 +264,7 @@ function mostrarToast(mensaje) {
 /* ---------- Etiqueta imprimible / PDF ---------- */
 
 function construirHtmlEtiqueta(ficha) {
+
     const filasMoldes = obtenerMoldesFicha(ficha)
         .map((item) => `<tr><td>${item.bizcochos}</td><td>${item.molde}</td></tr>`)
         .join("");
@@ -271,14 +272,45 @@ function construirHtmlEtiqueta(ficha) {
     const tablaMoldes = filasMoldes
         ? `
             <table class="etiqueta-tabla etiqueta-tabla-moldes">
-                <tr><th>Bizcochos</th><th>Molde</th></tr>
+
+                <tr>
+                    <th>Bizcochos</th>
+                    <th>Molde</th>
+                </tr>
+
                 ${filasMoldes}
+
+            </table>
+        `
+        : "";
+
+    const tablaProducto = ficha.tipoProducto
+        ? `
+            <table class="etiqueta-tabla etiqueta-tabla-productos">
+
+                <tr>
+                    <th>Producto</th>
+                    <td>${ficha.tipoProducto}</td>
+                    <th>Cantidad</th>
+                    <td>${ficha.cantidadProducto || 0}</td>
+                </tr>
+
+                ${ficha.tipoProducto1 ? `
+                    <tr>
+                        <th>Producto</th>
+                        <td>${ficha.tipoProducto1}</td>
+                        <th>Cantidad</th>
+                        <td>${ficha.cantidadProducto1 || 0}</td>
+                    </tr>
+                ` : ""}
+
             </table>
         `
         : "";
 
     return `
         <div class="etiqueta">
+
             <header class="etiqueta-encabezado">
                 <span class="etiqueta-marca">Producción Serena</span>
                 <span class="etiqueta-pedido">${ficha.pedido}</span>
@@ -287,15 +319,33 @@ function construirHtmlEtiqueta(ficha) {
             <h3 class="etiqueta-cliente">${ficha.cliente}</h3>
 
             <table class="etiqueta-tabla">
-                <tr><th>Teléfono</th><td>${ficha.telefono || "-"}</td></tr>
+                <tr>
+                    <th>Teléfono</th>
+                    <td>${ficha.telefono || "-"}</td>
+                </tr>
             </table>
 
             ${tablaMoldes}
 
+            ${tablaProducto}
+
             <table class="etiqueta-tabla">
-                <tr><th>Sabor</th><td>${ficha.sabor}</td></tr>
-                <tr><th>Relleno</th><td>${ficha.relleno}</td></tr>
-                <tr><th>Entrega</th><td>${formatearFecha(ficha.fechaEntrega)}</td></tr>
+                <tr>
+                    <th>Sabor</th>
+                    <td>${ficha.sabor}</td>
+                </tr>
+
+                <tr>
+                    <th>Relleno</th>
+                    <td>${ficha.relleno}</td>
+                </tr>
+            </table>
+
+            <table class="etiqueta-tabla">
+                <tr>
+                    <th>Entrega</th>
+                    <td>${formatearFecha(ficha.fechaEntrega)}</td>
+                </tr>
             </table>
 
             <p class="etiqueta-observaciones">
@@ -306,10 +356,10 @@ function construirHtmlEtiqueta(ficha) {
             <footer class="etiqueta-pie">
                 Generado el ${formatearFechaHora(ficha.fechaCreacion)}
             </footer>
+
         </div>
     `;
 }
-
 /* La P50 no aparece como impresora del sistema en Android/tablet (solo
    imprime desde la app Marklife por Bluetooth). Esta función genera un
    PNG de la etiqueta para guardarlo en la galería e importarlo ahí como
