@@ -127,3 +127,16 @@
 .etiqueta-tabla-productos td:last-child {
     padding-right: 0;
 }
+
+.etiqueta-observaciones {
+    margin: 12px 0 0;
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: left;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.etiqueta-observaciones strong {
+    font-weight: 700;
+}
