@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let fichas = [];
 
+
     /* =========================
        CARGAR FICHAS
     ========================= */
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }));
 
             renderizarTabla();
+
         }, (error) => {
 
             console.error(error);
@@ -186,13 +188,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const fichasFiltradas = fichas.filter((ficha) => {
 
-            const pedido =
-                String(ficha.pedido || "")
-                    .toLowerCase();
+            const pedido = String(
+                ficha.pedido || ""
+            ).toLowerCase();
 
-            const cliente =
-                String(ficha.cliente || "")
-                    .toLowerCase();
+            const cliente = String(
+                ficha.cliente || ""
+            ).toLowerCase();
 
             return (
                 pedido.includes(texto) ||
@@ -288,7 +290,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fila.querySelector(".boton-ver")
                 .addEventListener("click", () => {
-
                     verFicha(ficha);
                 });
 
@@ -299,7 +300,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fila.querySelector(".boton-imagen")
                 .addEventListener("click", () => {
-
                     descargarEtiquetaComoImagen(ficha);
                 });
 
@@ -322,7 +322,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fila.querySelector(".boton-eliminar")
                 .addEventListener("click", () => {
-
                     confirmarEliminar(ficha);
                 });
 
@@ -352,7 +351,6 @@ document.addEventListener("DOMContentLoaded", () => {
             await eliminarFicha(ficha.id);
 
             mostrarToast(
-
                 `Ficha ${ficha.pedido} eliminada correctamente.`
             );
 
@@ -365,4 +363,5 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
     }
+
 });
