@@ -485,8 +485,11 @@ function construirHtmlEtiqueta(ficha) {
 
     /* ---------- Productos ---------- */
 
-    const tablaProducto =
-        ficha.tipoProducto || ficha.tipoProducto1
+        const tablaProducto =
+        ficha.tipoProducto ||
+        ficha.tipoProducto1 ||
+        ficha.tipoProducto2 ||
+        ficha.tipoProducto3
             ? `
                 <table class="etiqueta-tabla etiqueta-tabla-productos">
 
@@ -497,7 +500,15 @@ function construirHtmlEtiqueta(ficha) {
                             <th>Cantidad</th>
                             <td>${ficha.cantidadProducto || 0}</td>
                         </tr>
+
+                        ${ficha.descripcionProducto ? `
+                            <tr>
+                                <th>Descripción</th>
+                                <td colspan="3">${ficha.descripcionProducto}</td>
+                            </tr>
+                        ` : ""}
                     ` : ""}
+
 
                     ${ficha.tipoProducto1 ? `
                         <tr>
@@ -506,13 +517,53 @@ function construirHtmlEtiqueta(ficha) {
                             <th>Cantidad</th>
                             <td>${ficha.cantidadProducto1 || 0}</td>
                         </tr>
+
+                        ${ficha.descripcionProducto1 ? `
+                            <tr>
+                                <th>Descripción</th>
+                                <td colspan="3">${ficha.descripcionProducto1}</td>
+                            </tr>
+                        ` : ""}
+                    ` : ""}
+
+
+                    ${ficha.tipoProducto2 ? `
+                        <tr>
+                            <th>Producto</th>
+                            <td>${ficha.tipoProducto2}</td>
+                            <th>Cantidad</th>
+                            <td>${ficha.cantidadProducto2 || 0}</td>
+                        </tr>
+
+                        ${ficha.descripcionProducto2 ? `
+                            <tr>
+                                <th>Descripción</th>
+                                <td colspan="3">${ficha.descripcionProducto2}</td>
+                            </tr>
+                        ` : ""}
+                    ` : ""}
+
+
+                    ${ficha.tipoProducto3 ? `
+                        <tr>
+                            <th>Producto</th>
+                            <td>${ficha.tipoProducto3}</td>
+                            <th>Cantidad</th>
+                            <td>${ficha.cantidadProducto3 || 0}</td>
+                        </tr>
+
+                        ${ficha.descripcionProducto3 ? `
+                            <tr>
+                                <th>Descripción</th>
+                                <td colspan="3">${ficha.descripcionProducto3}</td>
+                            </tr>
+                        ` : ""}
                     ` : ""}
 
                 </table>
             `
             : "";
-
-
+            
     /* ---------- Contenido de la etiqueta ---------- */
 
     return `

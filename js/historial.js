@@ -1,158 +1,368 @@
-/* =========================================================
-   HISTORIAL.JS
-   Lista, busca, muestra, imprime y elimina fichas guardadas.
-   Se mantiene sincronizado en tiempo real con Firestore.
-   ========================================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    const cuerpoTabla = document.getElementById("tabla-fichas");
+    const cuerpoTabla = document.getElementById("cuerpo-tabla");
     const campoBuscar = document.getElementById("buscar");
     const modalDetalle = document.getElementById("modal-detalle");
-    const contenedorDetalle = document.getElementById("detalle-ficha");
+    const contenedorDetalle = document.getElementById("contenedor-detalle");
     const botonCerrarModal = document.getElementById("cerrar-modal");
 
-    let todasLasFichas = [];
+    let fichas = [];
 
-    cuerpoTabla.innerHTML = `
-        <tr><td colspan="4" class="sin-fichas">Cargando fichas...</td></tr>
-    `;
+    /* =========================
+       CARGAR FICHAS
+    ========================= */
 
-    /* ---------- Suscripción en tiempo real a Firestore ---------- */
+    refFichas()
+        .orderBy("fechaCreacion", "desc")
+        .onSnapshot((snapshot) => {
 
-    refFichas().onSnapshot(
-        (snapshot) => {
-            todasLasFichas = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-            aplicarFiltro();
-        },
-        (error) => {
+            fichas = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            renderizarTabla();
+        }, (error) => {
+
             console.error(error);
-            cuerpoTabla.innerHTML = `
-                <tr><td colspan="4" class="sin-fichas">
-                    No se pudo conectar con la base de datos.
-                </td></tr>
-            `;
-        }
-    );
 
-    /* ---------- Buscar ---------- */
+            mostrarToast(
+                "No se pudieron cargar las fichas."
+            );
+        });
 
-    campoBuscar.addEventListener("input", aplicarFiltro);
 
-    /* ---------- Acciones de cada fila (delegación de eventos) ---------- */
+    /* =========================
+       BUSCADOR
+    ========================= */
 
-    cuerpoTabla.addEventListener("click", async (evento) => {
-        const boton = evento.target.closest("button[data-accion]");
-        if (!boton) return;
+    campoBuscar.addEventListener("input", renderizarTabla);
 
-        const { accion, id } = boton.dataset;
-        const ficha = todasLasFichas.find((f) => f.id === id);
-        if (!ficha) return;
 
-        if (accion === "ver") verFicha(ficha);
-        if (accion === "imagen") await descargarEtiquetaComoImagen(ficha);
-        if (accion === "editar") window.location.href = "nuevaficha.html?id=" + id;
-        if (accion === "eliminar") await confirmarEliminar(ficha);
+    /* =========================
+       CERRAR MODAL
+    ========================= */
+
+    botonCerrarModal.addEventListener("click", () => {
+        modalDetalle.close();
     });
 
-    /* ---------- Modal ---------- */
 
-    if (botonCerrarModal) {
-        botonCerrarModal.addEventListener("click", () => modalDetalle.close());
-    }
+    /* =========================
+       MOSTRAR DETALLE
+    ========================= */
 
-    if (modalDetalle) {
-        modalDetalle.addEventListener("click", (evento) => {
-            if (evento.target === modalDetalle) modalDetalle.close();
-        });
-    }
+    window.verFicha = function (ficha) {
 
-    /* ---------- Funciones auxiliares ---------- */
-
-    function aplicarFiltro() {
-        const termino = campoBuscar.value.trim().toLowerCase();
-
-        const filtradas = todasLasFichas.filter((ficha) =>
-            ficha.pedido.toLowerCase().includes(termino) ||
-            ficha.cliente.toLowerCase().includes(termino)
-        );
-
-        renderizarTabla(filtradas);
-    }
-
-    function renderizarTabla(fichas) {
-        if (!fichas.length) {
-            cuerpoTabla.innerHTML = `
-                <tr>
-                    <td colspan="4" class="sin-fichas">
-                        No hay fichas registradas todavía.
-                    </td>
-                </tr>
-            `;
+        if (!modalDetalle || !contenedorDetalle) {
             return;
         }
 
-        const filasOrdenadas = [...fichas].sort((a, b) =>
-            (b.fechaCreacion || "").localeCompare(a.fechaCreacion || "")
-        );
-
-        cuerpoTabla.innerHTML = filasOrdenadas.map((ficha) => `
-            <tr>
-                <td data-etiqueta="Pedido">${ficha.pedido}</td>
-                <td data-etiqueta="Cliente">${ficha.cliente}</td>
-                <td data-etiqueta="Entrega">${formatearFecha(ficha.fechaEntrega)}</td>
-                <td class="acciones" data-etiqueta="Acciones">
-                    <button type="button" data-accion="ver" data-id="${ficha.id}" title="Ver detalle">👁️</button>
-                    <button type="button" data-accion="imagen" data-id="${ficha.id}" title="Comanda">⬇️</button>
-                    <button type="button" data-accion="editar" data-id="${ficha.id}" title="Editar">✏️</button>
-                    <button type="button" class="eliminar" data-accion="eliminar" data-id="${ficha.id}" title="Eliminar">🗑️</button>
-                </td>
-            </tr>
-        `).join("");
-    }
-
-    function verFicha(ficha) {
-        if (!modalDetalle || !contenedorDetalle) return;
-
         const moldes = obtenerMoldesFicha(ficha);
+
         const listaMoldes = moldes.length
-            ? moldes.map((item) => `${item.bizcochos} bizcocho${Number(item.bizcochos) === 1 ? "" : "s"} · molde ${item.molde}`).join("<br>")
+            ? moldes
+                .map((item) =>
+                    `${item.bizcochos} bizcocho${Number(item.bizcochos) === 1 ? "" : "s"} · molde ${item.molde}`
+                )
+                .join("<br>")
             : "-";
 
+
+        /* =========================
+           PRODUCTOS
+        ========================= */
+
+        const productos = [
+            {
+                tipo: ficha.tipoProducto,
+                cantidad: ficha.cantidadProducto,
+                descripcion: ficha.descripcionProducto
+            },
+            {
+                tipo: ficha.tipoProducto1,
+                cantidad: ficha.cantidadProducto1,
+                descripcion: ficha.descripcionProducto1
+            },
+            {
+                tipo: ficha.tipoProducto2,
+                cantidad: ficha.cantidadProducto2,
+                descripcion: ficha.descripcionProducto2
+            },
+            {
+                tipo: ficha.tipoProducto3,
+                cantidad: ficha.cantidadProducto3,
+                descripcion: ficha.descripcionProducto3
+            }
+        ];
+
+
+        const listaProductos = productos
+            .filter((producto) => producto.tipo)
+            .map((producto) => `
+                <section class="producto-modal">
+
+                    <div class="item-modal">
+                        <strong>Producto:</strong> ${producto.tipo}
+                    </div>
+
+                    <div class="item-modal">
+                        <strong>Cantidad:</strong> ${producto.cantidad || 0}
+                    </div>
+
+                    ${producto.descripcion ? `
+                        <div class="item-modal">
+                            <strong>Descripción:</strong> ${producto.descripcion}
+                        </div>
+                    ` : ""}
+
+                </section>
+            `)
+            .join("");
+
+
+        /* =========================
+           CONTENIDO DEL MODAL
+        ========================= */
+
         contenedorDetalle.innerHTML = `
-            <div class="item-modal"><strong>Pedido:</strong> ${ficha.pedido}</div>
-            <div class="item-modal"><strong>Cliente:</strong> ${ficha.cliente}</div>
-            <div class="item-modal"><strong>Teléfono:</strong> ${ficha.telefono || "-"}</div>
-            <div class="item-modal"><strong>Moldes:</strong> ${listaMoldes}</div>
-            <div class="item-modal"><strong>Sabor:</strong> ${ficha.sabor}</div>
-            <div class="item-modal"><strong>Relleno:</strong> ${ficha.relleno}</div>
-            ${ficha.tipoProducto ? `
-                <div class="item-modal"><strong>Producto:</strong> ${ficha.tipoProducto}</div>
-                <div class="item-modal"><strong>Cantidad:</strong> ${ficha.cantidadProducto || 0}</div>
-            ` : ""}
-            <div class="item-modal"><strong>Entrega:</strong> ${formatearFecha(ficha.fechaEntrega)}</div>
-            <div class="item-modal"><strong>Observaciones:</strong> ${ficha.observaciones || "Sin observaciones"}</div>
-            <div class="item-modal"><strong>Creada:</strong> ${formatearFechaHora(ficha.fechaCreacion)}</div>
+
+            <div class="item-modal">
+                <strong>Pedido:</strong> ${ficha.pedido}
+            </div>
+
+            <div class="item-modal">
+                <strong>Cliente:</strong> ${ficha.cliente}
+            </div>
+
+            <div class="item-modal">
+                <strong>Teléfono:</strong> ${ficha.telefono || "-"}
+            </div>
+
+            <div class="item-modal">
+                <strong>Moldes:</strong> ${listaMoldes}
+            </div>
+
+            ${listaProductos}
+
+            <div class="item-modal">
+                <strong>Sabor:</strong> ${ficha.sabor}
+            </div>
+
+            <div class="item-modal">
+                <strong>Relleno:</strong> ${ficha.relleno}
+            </div>
+
+            <div class="item-modal">
+                <strong>Entrega:</strong>
+                ${formatearFecha(ficha.fechaEntrega)}
+            </div>
+
+            <div class="item-modal">
+                <strong>Observaciones:</strong>
+                ${ficha.observaciones || "Sin observaciones"}
+            </div>
+
+            <div class="item-modal">
+                <strong>Creada:</strong>
+                ${formatearFechaHora(ficha.fechaCreacion)}
+            </div>
+
         `;
 
         modalDetalle.showModal();
+    };
+
+
+    /* =========================
+       RENDERIZAR TABLA
+    ========================= */
+
+    function renderizarTabla() {
+
+        const texto = campoBuscar.value
+            .trim()
+            .toLowerCase();
+
+        const fichasFiltradas = fichas.filter((ficha) => {
+
+            const pedido =
+                String(ficha.pedido || "")
+                    .toLowerCase();
+
+            const cliente =
+                String(ficha.cliente || "")
+                    .toLowerCase();
+
+            return (
+                pedido.includes(texto) ||
+                cliente.includes(texto)
+            );
+        });
+
+
+        cuerpoTabla.innerHTML = "";
+
+
+        if (!fichasFiltradas.length) {
+
+            cuerpoTabla.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        No hay fichas para mostrar.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        fichasFiltradas.forEach((ficha) => {
+
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+
+                <td>
+                    ${ficha.pedido}
+                </td>
+
+                <td>
+                    ${ficha.cliente}
+                </td>
+
+                <td>
+                    ${ficha.telefono || "-"}
+                </td>
+
+                <td>
+                    ${formatearFecha(ficha.fechaEntrega)}
+                </td>
+
+                <td>
+                    ${ficha.estado || "Guardada"}
+                </td>
+
+                <td class="acciones-tabla">
+
+                    <button
+                        type="button"
+                        class="boton-ver"
+                        title="Ver ficha"
+                    >
+                        👁️
+                    </button>
+
+                    <button
+                        type="button"
+                        class="boton-imagen"
+                        title="Descargar comanda"
+                    >
+                        🖼️
+                    </button>
+
+                    <button
+                        type="button"
+                        class="boton-editar"
+                        title="Editar ficha"
+                    >
+                        ✏️
+                    </button>
+
+                    <button
+                        type="button"
+                        class="boton-eliminar"
+                        title="Eliminar ficha"
+                    >
+                        🗑️
+                    </button>
+
+                </td>
+            `;
+
+
+            /* =========================
+               VER
+            ========================= */
+
+            fila.querySelector(".boton-ver")
+                .addEventListener("click", () => {
+
+                    verFicha(ficha);
+                });
+
+
+            /* =========================
+               IMAGEN
+            ========================= */
+
+            fila.querySelector(".boton-imagen")
+                .addEventListener("click", () => {
+
+                    descargarEtiquetaComoImagen(ficha);
+                });
+
+
+            /* =========================
+               EDITAR
+            ========================= */
+
+            fila.querySelector(".boton-editar")
+                .addEventListener("click", () => {
+
+                    window.location.href =
+                        `nuevaficha.html?id=${ficha.id}`;
+                });
+
+
+            /* =========================
+               ELIMINAR
+            ========================= */
+
+            fila.querySelector(".boton-eliminar")
+                .addEventListener("click", () => {
+
+                    confirmarEliminar(ficha);
+                });
+
+
+            cuerpoTabla.appendChild(fila);
+        });
     }
+
+
+    /* =========================
+       CONFIRMAR ELIMINACIÓN
+    ========================= */
 
     async function confirmarEliminar(ficha) {
-        const confirmado = window.confirm(
-            `¿Eliminar la ficha ${ficha.pedido} de ${ficha.cliente}? Esta acción no se puede deshacer.`
+
+        const confirmar = confirm(
+            `¿Seguro que deseas eliminar la ficha ${ficha.pedido}?`
         );
 
-        if (!confirmado) return;
+        if (!confirmar) {
+            return;
+        }
+
 
         try {
+
             await eliminarFicha(ficha.id);
-            mostrarToast("Ficha " + ficha.pedido + " eliminada.");
-            // onSnapshot actualiza la tabla automáticamente.
+
+            mostrarToast(
+
+                `Ficha ${ficha.pedido} eliminada correctamente.`
+            );
+
         } catch (error) {
+
             console.error(error);
-            mostrarToast("No se pudo eliminar. Revisa tu conexión a internet.");
+
+            mostrarToast(
+                "No se pudo eliminar la ficha."
+            );
         }
     }
-
 });
