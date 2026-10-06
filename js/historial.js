@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const cuerpoTabla = document.getElementById("cuerpo-tabla");
+    const cuerpoTabla = document.getElementById("tabla-fichas");
     const campoBuscar = document.getElementById("buscar");
     const modalDetalle = document.getElementById("modal-detalle");
-    const contenedorDetalle = document.getElementById("contenedor-detalle");
+    const contenedorDetalle = document.getElementById("detalle-ficha");
     const botonCerrarModal = document.getElementById("cerrar-modal");
 
     let fichas = [];
@@ -188,13 +188,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const fichasFiltradas = fichas.filter((ficha) => {
 
-            const pedido = String(
-                ficha.pedido || ""
-            ).toLowerCase();
+            const pedido =
+                String(ficha.pedido || "")
+                    .toLowerCase();
 
-            const cliente = String(
-                ficha.cliente || ""
-            ).toLowerCase();
+            const cliente =
+                String(ficha.cliente || "")
+                    .toLowerCase();
 
             return (
                 pedido.includes(texto) ||
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             cuerpoTabla.innerHTML = `
                 <tr>
-                    <td colspan="6">
+                    <td colspan="4">
                         No hay fichas para mostrar.
                     </td>
                 </tr>
@@ -235,15 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </td>
 
                 <td>
-                    ${ficha.telefono || "-"}
-                </td>
-
-                <td>
                     ${formatearFecha(ficha.fechaEntrega)}
-                </td>
-
-                <td>
-                    ${ficha.estado || "Guardada"}
                 </td>
 
                 <td class="acciones-tabla">
@@ -290,6 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fila.querySelector(".boton-ver")
                 .addEventListener("click", () => {
+
                     verFicha(ficha);
                 });
 
@@ -300,6 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fila.querySelector(".boton-imagen")
                 .addEventListener("click", () => {
+
                     descargarEtiquetaComoImagen(ficha);
                 });
 
@@ -322,6 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fila.querySelector(".boton-eliminar")
                 .addEventListener("click", () => {
+
                     confirmarEliminar(ficha);
                 });
 
@@ -365,3 +360,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+
